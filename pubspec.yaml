@@ -1,9 +1,12 @@
-name: soulfyre
+name: orangelist
 description: A new Flutter project.
 
 publish_to: 'none'
 
 version: 1.0.0+1
+
+# - name: Due Dates
+#   uses: alexleventer/github-issue-due-dates-action@1.1.0
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
@@ -14,7 +17,7 @@ dependencies:
     sdk: flutter
   flutter_svg: ^1.1.5
   provider: ^6.0.4
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.0.17
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -25,26 +28,20 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/future.svg
-    - assets/images/past.svg
-    - assets/images/present.svg
+    - assets/images/happy.svg
+    - assets/images/monthlyOverview.svg
+    - assets/images/dragAndOrder.svg
+
 
 fonts:
-  - family: EncodeSans
+  - family: Nunito
     fonts:
-      - asset: assets/fonts/EncodeSans-Black.ttf
-  - family: Lato
-    fonts:
-      - asset: assets/fonts/Lato-Regular.ttf
+      - asset: assets/fonts/Nunito-Regular.ttf
         weight: 400
-      - asset: assets/fonts/Lato-Light.ttf
-  - family: Montserrat
-    fonts:
-      - asset: assets/fonts/Montserrat-Light.ttf
-        weight: 300
-      - asset: assets/fonts/Montserrat-Regular.ttf
-        weight: 400
-      - asset: assets/fonts/Montserrat-Medium.ttf
+      - asset: assets/fonts/Nunito-Medium.ttf
         weight: 500
-      - asset: assets/fonts/Montserrat-Bold.ttf
-        weight: 800
+
+  - family: LibreBaskerville
+    fonts:
+      - asset: assets/fonts/LibreBaskerville-Bold.ttf
+        weight: 700
