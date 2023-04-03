@@ -1,6 +1,5 @@
+import 'package:orangelist/src/onboarding/models/on_boarding_model.dart';
 import 'package:orangelist/src/utils/constants.dart';
-
-import 'on_boarding_model.dart';
 
 List<OnBoard> onBoardingList = [
   OnBoard(head: "Orangelist", subHead: onBoardingMainDesc, assetName: ""),

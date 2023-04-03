@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orangelist/src/onboarding/on_boarding_data.dart';
+import 'package:orangelist/src/onboarding/data/on_boarding_data.dart';
 import 'package:orangelist/src/theme/colors.dart';
+import 'package:orangelist/src/utils/global_size.dart';
 
-import '../utils/global_size.dart';
-
-class OnBoardingScreen extends StatefulWidget {
-  const OnBoardingScreen({super.key});
+class OnBoardingScreenOld extends StatefulWidget {
+  const OnBoardingScreenOld({super.key});
 
   @override
-  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
+  State<OnBoardingScreenOld> createState() => _OnBoardingScreenOldState();
 }
 
-class _OnBoardingScreenState extends State<OnBoardingScreen> {
+class _OnBoardingScreenOldState extends State<OnBoardingScreenOld> {
   int _currentPage = 0;
   final int _totalPages = onBoardingList.length;
   final PageController _pageController = PageController();
@@ -115,10 +114,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   curve: Curves.ease,
                                 );
                               },
-                              child: CircleAvatar(
+                              child: const CircleAvatar(
                                 radius: 21,
                                 backgroundColor: themeColorLight,
-                                child: const Icon(
+                                child: Icon(
                                   Icons.chevron_right,
                                   color: Colors.white,
                                   size: 26,
