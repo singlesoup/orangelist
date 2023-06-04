@@ -31,6 +31,10 @@ class OnBoardProgressPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     double arcAngle = (360 / onBoardsNum) * (completePercent / 100);
+    int currntIndex = 0;
+    if (completePercent == 90) {
+      currntIndex++;
+    }
 
     drawArc(
       canvas: canvas,
@@ -38,13 +42,43 @@ class OnBoardProgressPainter extends CustomPainter {
       paint: paint,
       color: Colors.grey,
     );
-    drawArc(
+    drawCompleterArc(
       canvas: canvas,
       size: size,
       paint: complete,
       color: Colors.amber,
       arcAngle: arcAngle,
+      currntIndex: currntIndex,
     );
+  }
+
+  void drawCompleterArc({
+    required Canvas canvas,
+    required Size size,
+    required Paint paint,
+    required Color color,
+    double? arcAngle,
+    required int currntIndex,
+  }) {
+    double degree = 90;
+    double arc = 360 / onBoardsNum;
+    int gapBetnArc = 6;
+    for (var i = 0; i < onBoardsNum; i++) {
+      if (i == 1) {
+        canvas.drawArc(
+          Rect.fromCenter(
+            center: Offset(size.width / 2, size.height - 40),
+            width: size.width,
+            height: size.height,
+          ),
+          degreeToRadianAngle(degree + gapBetnArc),
+          degreeToRadianAngle(arcAngle ?? arc - (2 * gapBetnArc)),
+          false,
+          paint,
+        );
+      }
+      degree += arc;
+    }
   }
 
   void drawArc(

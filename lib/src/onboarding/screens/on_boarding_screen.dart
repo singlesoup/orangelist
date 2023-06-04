@@ -15,7 +15,7 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
-  double percentage = 10.0;
+  double percentage = 0.0;
   late Timer _timer;
 
   @override
@@ -31,7 +31,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       startTheTicker();
     } else {
       _timer.cancel();
-      //   percentage = 0;
     }
     return Scaffold(
       backgroundColor: Colors.white,
@@ -59,10 +58,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   void startTheTicker() {
     _timer = Timer(
-      const Duration(seconds: 1),
+      const Duration(milliseconds: 100),
       () {
         setState(() {
-          percentage += 10;
+          percentage += 1;
         });
       },
     );
