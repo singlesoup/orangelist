@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:orangelist/src/home/screens/homescreen.dart';
 
-import 'src/onboarding/screens/on_boarding_screen.dart';
+// import 'src/onboarding/screens/on_boarding_screen.dart';
 import 'src/theme/text_theme.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         textTheme: sfTextTheme,
         brightness: Brightness.dark,
       ),
-      home: const OnBoardingScreen(),
+      home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

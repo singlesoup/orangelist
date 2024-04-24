@@ -10,7 +10,7 @@ class OnBoardProgressPainter extends CustomPainter {
   final double completePercent;
   OnBoardProgressPainter({
     this.strokeWidth = 1.0,
-    this.color = themeColorLight,
+    this.color = themeColor,
     required this.onBoardsNum,
     required this.completePercent,
   });

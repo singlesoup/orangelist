@@ -46,7 +46,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             foregroundPainter: OnBoardProgressPainter(
               strokeWidth: 8.0,
               onBoardsNum: 3,
-              color: themeColorLight.withOpacity(0.8),
+              color: themeColor.withOpacity(0.8),
               completePercent: percentage,
             ),
             size: Size(diameter, diameter),

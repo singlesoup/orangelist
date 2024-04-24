@@ -30,7 +30,7 @@ class _OnBoardingScreenOldState extends State<OnBoardingScreenOld> {
       duration: const Duration(milliseconds: 180),
       margin: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
-        color: isActive ? themeColorLight : themeColorLight.withOpacity(0.4),
+        color: isActive ? themeColor : themeColor.withOpacity(0.4),
         borderRadius: BorderRadius.circular(16),
       ),
       height: Global.screenHeight! * 0.02,
@@ -116,7 +116,7 @@ class _OnBoardingScreenOldState extends State<OnBoardingScreenOld> {
                               },
                               child: const CircleAvatar(
                                 radius: 21,
-                                backgroundColor: themeColorLight,
+                                backgroundColor: themeColor,
                                 child: Icon(
                                   Icons.chevron_right,
                                   color: Colors.white,
@@ -133,7 +133,7 @@ class _OnBoardingScreenOldState extends State<OnBoardingScreenOld> {
                             child: ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
-                                    MaterialStateProperty.all(themeColorLight),
+                                    MaterialStateProperty.all(themeColor),
                               ),
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(
