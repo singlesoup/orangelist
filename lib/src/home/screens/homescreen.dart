@@ -11,6 +11,7 @@ import 'package:flutter/widgets.dart'
         Container,
         CrossAxisAlignment,
         EdgeInsets,
+        Expanded,
         FontWeight,
         ListView,
         MainAxisAlignment,
@@ -19,17 +20,20 @@ import 'package:flutter/widgets.dart'
         Radius,
         Row,
         SafeArea,
-        SingleChildScrollView,
         State,
         StatefulWidget,
         Text,
         Widget;
+import 'package:orangelist/src/home/provider/todo_provider.dart'
+    show TodoProvider;
 import 'package:orangelist/src/home/widgets/create_task_bar.dart'
     show CreateTaskBar;
-import 'package:orangelist/src/home/widgets/task_tile_widget.dart';
+import 'package:orangelist/src/home/widgets/task_tile_widget.dart'
+    show TaskTileWidget;
 
 import 'package:orangelist/src/theme/colors.dart'
     show bgDark, sandAccent, themeColor;
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,77 +43,82 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List dailyToDolist = [];
-  int completedCount = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgDark,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(34.0),
-                margin: const EdgeInsets.all(18.0),
-                decoration: BoxDecoration(
-                  color: bgDark,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(28.0),
-                  ),
-                  border: Border.all(
-                    color: sandAccent,
-                  ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(34.0),
+              margin: const EdgeInsets.all(18.0),
+              decoration: BoxDecoration(
+                color: bgDark,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(28.0),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Todo Done',
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                        Text(
-                          'keep it up',
-                          style:
-                              Theme.of(context).textTheme.labelLarge!.copyWith(
-                                    color: sandAccent,
-                                    fontWeight: FontWeight.w400,
-                                    letterSpacing: 2.1,
-                                    fontSize: 22,
-                                  ),
-                        ),
-                      ],
-                    ),
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundColor: themeColor,
-                      child: Center(
-                        child: Text(
-                          "$completedCount/${dailyToDolist.length}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineMedium!
-                              .copyWith(
-                                color: bgDark,
-                                fontWeight: FontWeight.w800,
-                              ),
-                        ),
+                border: Border.all(
+                  color: sandAccent,
+                  width: 0.5,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Todo Done',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
+                              fontWeight: FontWeight.w800,
+                            ),
                       ),
-                    ),
-                  ],
-                ),
+                      Text(
+                        'keep it up',
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                              color: sandAccent,
+                              fontWeight: FontWeight.w400,
+                              letterSpacing: 2.1,
+                              fontSize: 22,
+                            ),
+                      ),
+                    ],
+                  ),
+                  Consumer<TodoProvider>(
+                    builder: (context, todoprovider, child) {
+                      int completedCount = todoprovider.completedCount;
+                      int totalLength = todoprovider.dailyToDolist.length;
+                      return CircleAvatar(
+                        radius: 60,
+                        backgroundColor: themeColor,
+                        child: Center(
+                          child: Text(
+                            "$completedCount/$totalLength",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  color: bgDark,
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-              CreateTaskBar(
-                onPressed: (String text) {
-                  // todoProvider.addTodo(text);
-                },
-              ),
-              Padding(
+            ),
+            const CreateTaskBar(),
+            Expanded(
+              child: Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 12,
                   horizontal: 18,
@@ -120,19 +129,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       accentColor: themeColor.withOpacity(0.2),
                     ),
                   ),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: dailyToDolist.length,
-                    itemBuilder: (context, index) {
-                      return TaskTileWidget(
-                        taskTitle: dailyToDolist[index],
-                      );
-                    },
-                  ),
+                  child: Consumer<TodoProvider>(
+                      builder: (context, todoprovider, child) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: todoprovider.dailyToDolist.length,
+                      itemBuilder: (context, index) {
+                        return TaskTileWidget(
+                          taskTitle: todoprovider.dailyToDolist[index].title,
+                          index: index,
+                        );
+                      },
+                    );
+                  }),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

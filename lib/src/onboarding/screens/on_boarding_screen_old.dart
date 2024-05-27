@@ -133,7 +133,7 @@ class _OnBoardingScreenOldState extends State<OnBoardingScreenOld> {
                             child: ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
-                                    MaterialStateProperty.all(themeColor),
+                                    WidgetStateProperty.all(themeColor),
                               ),
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(

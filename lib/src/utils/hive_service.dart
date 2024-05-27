@@ -5,7 +5,7 @@ import 'package:orangelist/src/home/data/todo_list.dart'
 import 'package:orangelist/src/home/data/todo_model.dart'
     show TodoModel, TodoModelAdapter;
 
-const String _todos = 'todos';
+const String todoBoxHive = 'todos';
 
 const String todosHive = 'TodoHive';
 
@@ -16,17 +16,17 @@ Future<void> initHive({
   Hive.registerAdapter(TodoModelAdapter());
   Hive.registerAdapter(TodoListAdapter());
 
-  Hive.openBox<TodoList>(_todos);
+  await Hive.openBox<TodoList>(todoBoxHive);
 }
 
 TodoList getTodos() {
-  final Box<TodoList> box = Hive.box(_todos);
+  final Box<TodoList> box = Hive.box(todoBoxHive);
   TodoList? todos = box.get(todosHive);
   return todos ?? TodoList(todos: []);
 }
 
 Future<void> putTodo(TodoList newTodo) async {
-  final Box<TodoList> box = Hive.box(_todos);
+  final Box<TodoList> box = Hive.box(todoBoxHive);
   await box.put(todosHive, newTodo);
 }
 
@@ -35,7 +35,7 @@ void updateHiveTodo({
   bool? isCompleted,
   String? title,
 }) {
-  final Box<TodoList> box = Hive.box(_todos);
+  final Box<TodoList> box = Hive.box(todoBoxHive);
   final todoList = box.getAt(0);
   final TodoModel? todo = todoList!.todos?[index];
   // for status udpate

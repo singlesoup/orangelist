@@ -1,29 +1,43 @@
 import 'package:flutter/material.dart' show Colors, IconButton, Icons, Theme;
+
 import 'package:flutter/widgets.dart'
     show
         Border,
         BorderRadius,
         BoxDecoration,
+        BoxShape,
         BuildContext,
+        CircleBorder,
         Container,
+        Curves,
         EdgeInsets,
+        Expanded,
         FontWeight,
+        GestureDetector,
         Icon,
         MainAxisAlignment,
         Radius,
         Row,
+        ShapeDecoration,
+        SizedBox,
         StatelessWidget,
-        Text,
         Widget;
-import 'package:orangelist/src/theme/colors.dart' show sandAccent;
+import 'package:orangelist/src/home/provider/todo_provider.dart'
+    show TodoProvider;
+import 'package:orangelist/src/home/widgets/line_through_text.dart'
+    show LineThroughText;
+import 'package:orangelist/src/theme/colors.dart' show sandAccent, themeColor;
+import 'package:provider/provider.dart' show Consumer, ReadContext;
 
 class TaskTileWidget extends StatelessWidget {
   const TaskTileWidget({
     super.key,
     required this.taskTitle,
+    required this.index,
   });
 
   final String taskTitle;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +45,17 @@ class TaskTileWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: sandAccent.withOpacity(0.08),
         borderRadius: const BorderRadius.all(
-          Radius.circular(18.0),
+          Radius.circular(12.0),
         ),
         border: Border.all(
           color: sandAccent,
-          width: 0.8,
+          width: 0.5,
         ),
       ),
-      margin: const EdgeInsets.all(8),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 2,
+        vertical: 8,
+      ),
       padding: const EdgeInsets.symmetric(
         vertical: 8,
         horizontal: 16,
@@ -46,12 +63,58 @@ class TaskTileWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            taskTitle,
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: sandAccent,
-                  fontWeight: FontWeight.w700,
-                ),
+          Expanded(
+            child: Consumer<TodoProvider>(
+              builder: (context, todo, child) {
+                bool isCompleted = todo.dailyToDolist[index].isCompleted;
+                return Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        isCompleted = !isCompleted;
+                        todo.updateTodoStatus(index, isCompleted);
+                      },
+                      child: Container(
+                        height: 26,
+                        width: 26,
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: !isCompleted
+                            ? BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: themeColor,
+                                  width: 0.5,
+                                ),
+                              )
+                            : const ShapeDecoration(
+                                shape: CircleBorder(),
+                                color: themeColor,
+                              ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 14,
+                    ),
+                    Expanded(
+                      child: LineThroughText(
+                        text: taskTitle,
+                        curve: Curves.decelerate,
+                        duration: const Duration(
+                          milliseconds: 600,
+                        ),
+                        textStyle:
+                            Theme.of(context).textTheme.titleLarge!.copyWith(
+                                  color: sandAccent,
+                                  fontWeight: FontWeight.w700,
+                                  decorationColor: sandAccent,
+                                ),
+                        isCompleted: isCompleted,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(
@@ -61,7 +124,9 @@ class TaskTileWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<TodoProvider>().todoIndex = index;
+                  },
                   icon: const Icon(
                     Icons.mode_edit_outline_outlined,
                     color: sandAccent,
@@ -70,16 +135,25 @@ class TaskTileWidget extends StatelessWidget {
                     horizontal: 4,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  splashColor: Colors.red.withOpacity(0.8),
-                  icon: const Icon(
-                    Icons.delete_outline_rounded,
-                    color: sandAccent,
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 4,
-                  ),
+                Consumer<TodoProvider>(
+                  builder: (context, todo, child) {
+                    bool buttonDisable = todo.todoIndex != -1;
+                    return IconButton(
+                      onPressed: buttonDisable
+                          ? null
+                          : () {
+                              todo.deleteTodo(index);
+                            },
+                      splashColor: Colors.red.withOpacity(0.8),
+                      icon: Icon(
+                        Icons.delete_outline_rounded,
+                        color: buttonDisable ? Colors.grey[600] : sandAccent,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

@@ -1,14 +1,13 @@
-import 'dart:async';
+import 'dart:async' show runZonedGuarded;
 
 import 'package:flutter/material.dart'
     show Brightness, MaterialApp, ThemeData, Widget, runApp;
 import 'package:flutter/widgets.dart'
     show BuildContext, StatelessWidget, WidgetsFlutterBinding;
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/home/screens/homescreen.dart' show HomeScreen;
-import 'package:orangelist/src/utils/hive_service.dart';
+import 'package:orangelist/src/utils/hive_service.dart' show initHive;
 import 'package:provider/provider.dart'
     show ChangeNotifierProvider, MultiProvider;
 
@@ -18,8 +17,7 @@ import 'src/theme/text_theme.dart' show sfTextTheme;
 void main() {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await Hive.initFlutter();
-    initHive();
+    await initHive();
     runApp(const MyApp());
   }, (error, stack) {
     // Use firebase crashlytics if added

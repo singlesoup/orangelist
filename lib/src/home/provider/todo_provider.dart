@@ -5,19 +5,31 @@ import 'package:orangelist/src/utils/hive_service.dart'
     show getTodos, putTodo, updateHiveTodo;
 
 class TodoProvider extends ChangeNotifier {
+  TodoProvider() {
+    getData();
+  }
+
   List<TodoModel> _dailyToDolist = [];
 
-  List get dailyToDolist => _dailyToDolist;
+  List<TodoModel> get dailyToDolist => _dailyToDolist;
 
   int _completedCount = 0;
 
   int get completedCount => _completedCount;
 
-  TodoProvider() {
-    /// get data from hive
+  int _todoIndex = -1;
+  int get todoIndex => _todoIndex;
+
+  set todoIndex(int newIndex) {
+    _todoIndex = newIndex;
+    notifyListeners();
+  }
+
+  void getData() {
     TodoList hiveList = getTodos();
     _dailyToDolist = hiveList.todos!;
   }
+
   void addTodo(String todo) {
     if (todo.isEmpty) {
       throw ArgumentError("Todo text cannot be empty!");
@@ -28,6 +40,10 @@ class TodoProvider extends ChangeNotifier {
     ));
     putTodo(TodoList(todos: _dailyToDolist));
     notifyListeners();
+  }
+
+  String editTodo() {
+    return _todoIndex == -1 ? '' : _dailyToDolist[_todoIndex].title;
   }
 
   void deleteTodo(int index) {
