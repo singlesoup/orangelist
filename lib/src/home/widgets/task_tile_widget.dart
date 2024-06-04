@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart' show Colors, IconButton, Icons, Theme;
-
 import 'package:flutter/widgets.dart'
     show
         Border,
@@ -60,38 +59,40 @@ class TaskTileWidget extends StatelessWidget {
         vertical: 8,
         horizontal: 16,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Consumer<TodoProvider>(
-              builder: (context, todo, child) {
-                bool isCompleted = todo.dailyToDolist[index].isCompleted;
-                return Row(
+      child: Consumer<TodoProvider>(
+        builder: (context, todo, child) {
+          bool buttonDisable = todo.todoIndex != -1;
+          bool isCompleted = todo.dailyToDolist[index].isCompleted;
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Row(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        isCompleted = !isCompleted;
-                        todo.updateTodoStatus(index, isCompleted);
-                      },
-                      child: Container(
-                        height: 26,
-                        width: 26,
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: !isCompleted
-                            ? BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
+                    if (!buttonDisable)
+                      GestureDetector(
+                        onTap: () {
+                          isCompleted = !isCompleted;
+                          todo.updateTodoStatus(index, isCompleted);
+                        },
+                        child: Container(
+                          height: 26,
+                          width: 26,
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: !isCompleted
+                              ? BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: themeColor,
+                                    width: 0.5,
+                                  ),
+                                )
+                              : const ShapeDecoration(
+                                  shape: CircleBorder(),
                                   color: themeColor,
-                                  width: 0.5,
                                 ),
-                              )
-                            : const ShapeDecoration(
-                                shape: CircleBorder(),
-                                color: themeColor,
-                              ),
+                        ),
                       ),
-                    ),
                     const SizedBox(
                       width: 14,
                     ),
@@ -112,33 +113,30 @@ class TaskTileWidget extends StatelessWidget {
                       ),
                     ),
                   ],
-                );
-              },
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 4,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    context.read<TodoProvider>().todoIndex = index;
-                  },
-                  icon: const Icon(
-                    Icons.mode_edit_outline_outlined,
-                    color: sandAccent,
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 4,
-                  ),
                 ),
-                Consumer<TodoProvider>(
-                  builder: (context, todo, child) {
-                    bool buttonDisable = todo.todoIndex != -1;
-                    return IconButton(
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 4,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: isCompleted
+                          ? null
+                          : () {
+                              context.read<TodoProvider>().todoIndex = index;
+                            },
+                      icon: Icon(
+                        Icons.mode_edit_outline_outlined,
+                        color: isCompleted ? Colors.grey[600] : sandAccent,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                      ),
+                    ),
+                    IconButton(
                       onPressed: buttonDisable
                           ? null
                           : () {
@@ -152,13 +150,13 @@ class TaskTileWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         horizontal: 4,
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ],
+              )
+            ],
+          );
+        },
       ),
     );
   }

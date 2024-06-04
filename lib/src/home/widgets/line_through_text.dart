@@ -8,11 +8,17 @@ import 'package:flutter/widgets.dart'
         Curve,
         CurvedAnimation,
         CustomPaint,
+        MediaQuery,
         SingleTickerProviderStateMixin,
+        SizedBox,
         State,
         StatefulWidget,
+        TextDirection,
+        TextPainter,
+        TextSpan,
         TextStyle,
-        Widget;
+        Widget,
+        WidgetsBinding;
 import 'package:orangelist/src/home/widgets/painter/strike_through_painter.dart'
     show StrikeThroughPainter;
 import 'package:orangelist/src/theme/colors.dart' show sandAccent;
@@ -43,6 +49,8 @@ class _LineThroughTextState extends State<LineThroughText>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  late TextPainter _textPainter;
+  double _textHeight = 0.0;
 
   @override
   void initState() {
@@ -59,6 +67,41 @@ class _LineThroughTextState extends State<LineThroughText>
     if (widget.isCompleted) {
       _controller.forward();
     }
+
+    _textPainter = TextPainter(
+      text: TextSpan(
+        text: widget.text,
+        style: widget.textStyle.copyWith(
+          color: widget.isCompleted ? sandAccent.withOpacity(0.56) : sandAccent,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+      maxLines: null,
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateTextHeight();
+    });
+  }
+
+  void _updateTextHeight({String? newText}) {
+    if (newText != null) {
+      _textPainter = TextPainter(
+        text: TextSpan(
+          text: widget.text,
+          style: widget.textStyle.copyWith(
+            color:
+                widget.isCompleted ? sandAccent.withOpacity(0.56) : sandAccent,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+        maxLines: null,
+      );
+    }
+    _textPainter.layout(maxWidth: MediaQuery.of(context).size.width);
+    setState(() {
+      _textHeight = _textPainter.height * 2;
+    });
   }
 
   @override
@@ -71,6 +114,10 @@ class _LineThroughTextState extends State<LineThroughText>
         _controller.reverse();
       }
     }
+
+    if (widget.text != oldWidget.text) {
+      _updateTextHeight(newText: widget.text);
+    }
   }
 
   @override
@@ -81,19 +128,26 @@ class _LineThroughTextState extends State<LineThroughText>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, child) {
-        return CustomPaint(
-          painter: StrikeThroughPainter(
-            progress: _animation.value,
-            strikeColor: widget.strikeColor,
-            text: widget.text,
-            textStyle: widget.textStyle,
-            strokeThickness: 3,
-          ),
-        );
-      },
+    return SizedBox(
+      height: _textHeight,
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return CustomPaint(
+            painter: StrikeThroughPainter(
+              progress: _animation.value,
+              strikeColor: widget.strikeColor,
+              text: widget.text,
+              textStyle: widget.textStyle.copyWith(
+                color: widget.isCompleted
+                    ? sandAccent.withOpacity(0.56)
+                    : sandAccent,
+              ),
+              strokeThickness: 3,
+            ),
+          );
+        },
+      ),
     );
   }
 }

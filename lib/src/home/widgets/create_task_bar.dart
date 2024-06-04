@@ -69,6 +69,10 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                       ),
                       // onChanged: (String value) {},
                       // onSubmitted: (text) {},
+                      onTap: () {
+                        _controller.selection = TextSelection.collapsed(
+                            offset: _controller.text.length);
+                      },
                     );
                   },
                 ),

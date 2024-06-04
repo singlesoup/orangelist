@@ -22,8 +22,9 @@ class StrikeThroughPainter extends CustomPainter {
         text: text,
         style: textStyle,
       ),
+      maxLines: null,
       textDirection: TextDirection.ltr,
-    )..layout();
+    )..layout(maxWidth: size.width);
 
     final textWidth = textPainter.width;
     final textHeight = textPainter.height;
