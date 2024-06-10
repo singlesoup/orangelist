@@ -9,8 +9,7 @@ import 'package:flutter/widgets.dart'
         Padding,
         Radius,
         StatelessWidget,
-        Widget,
-        debugPrint;
+        Widget;
 import 'package:orangelist/src/theme/colors.dart' show bgDark, sandAccent;
 
 class WebAppOutlineWidget extends StatelessWidget {
@@ -26,7 +25,7 @@ class WebAppOutlineWidget extends StatelessWidget {
     return Container(
       color: bgDark,
       child: LayoutBuilder(builder: (context, constraints) {
-        debugPrint(constraints.maxWidth.toString());
+        // debugPrint(constraints.maxWidth.toString());
         return Padding(
           padding: EdgeInsets.symmetric(
             horizontal: constraints.maxWidth < 580

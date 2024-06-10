@@ -63,13 +63,14 @@ class TaskTileWidget extends StatelessWidget {
         builder: (context, todo, child) {
           bool buttonDisable = todo.todoIndex != -1;
           bool isCompleted = todo.dailyToDolist[index].isCompleted;
+          bool forReorder = todo.isReorder;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
                 child: Row(
                   children: [
-                    if (!buttonDisable)
+                    if (!buttonDisable && !forReorder)
                       GestureDetector(
                         onTap: () {
                           isCompleted = !isCompleted;
@@ -115,45 +116,46 @@ class TaskTileWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 4,
+              if (!forReorder)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: isCompleted
+                            ? null
+                            : () {
+                                context.read<TodoProvider>().todoIndex = index;
+                              },
+                        icon: Icon(
+                          Icons.mode_edit_outline_outlined,
+                          color: isCompleted ? Colors.grey[600] : sandAccent,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: buttonDisable
+                            ? null
+                            : () {
+                                todo.deleteTodo(index);
+                              },
+                        splashColor: Colors.red.withOpacity(0.8),
+                        icon: Icon(
+                          Icons.delete_outline_rounded,
+                          color: buttonDisable ? Colors.grey[600] : sandAccent,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: isCompleted
-                          ? null
-                          : () {
-                              context.read<TodoProvider>().todoIndex = index;
-                            },
-                      icon: Icon(
-                        Icons.mode_edit_outline_outlined,
-                        color: isCompleted ? Colors.grey[600] : sandAccent,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 4,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: buttonDisable
-                          ? null
-                          : () {
-                              todo.deleteTodo(index);
-                            },
-                      splashColor: Colors.red.withOpacity(0.8),
-                      icon: Icon(
-                        Icons.delete_outline_rounded,
-                        color: buttonDisable ? Colors.grey[600] : sandAccent,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 4,
-                      ),
-                    ),
-                  ],
-                ),
-              )
             ],
           );
         },

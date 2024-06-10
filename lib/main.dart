@@ -33,25 +33,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        textTheme: sfTextTheme,
-        brightness: Brightness.dark,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => TodoProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          textTheme: sfTextTheme,
+          brightness: Brightness.dark,
+        ),
+        home: MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (_) => TodoProvider(),
+            ),
+          ],
+          child: kIsWeb
+              ? const WebAppOutlineWidget(
+                  child: HomeScreen(),
+                )
+              : const HomeScreen(),
+        ),
+        debugShowCheckedModeBanner: false,
       ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => TodoProvider(),
-          ),
-        ],
-        child: kIsWeb
-            ? const WebAppOutlineWidget(
-                child: HomeScreen(),
-              )
-            : const HomeScreen(),
-      ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -86,4 +86,35 @@ class TodoProvider extends ChangeNotifier {
     );
     notifyListeners();
   }
+
+  /// For reOrder switch
+  bool _isReorder = false;
+
+  bool get isReorder => _isReorder;
+
+  set isReorder(bool newBool) {
+    _isReorder = newBool;
+    notifyListeners();
+  }
+
+  onReorder(int oldIndex, int newIndex) {
+    // if (oldIndex < 0 || oldIndex >= _dailyToDolist.length) {
+    //   throw RangeError("Invalid oldIndex $oldIndex provided for update!");
+    // }
+
+    // if (newIndex < 0 || newIndex >= _dailyToDolist.length) {
+    //   throw RangeError("Invalid newIndex $newIndex provided for update!");
+    // }
+    if (newIndex > oldIndex) {
+      newIndex -= 1;
+    }
+
+    TodoModel item = _dailyToDolist[oldIndex];
+    _dailyToDolist.removeAt(oldIndex);
+    _dailyToDolist.insert(newIndex, item);
+
+    putTodo(TodoList(todos: _dailyToDolist));
+
+    notifyListeners();
+  }
 }
