@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show Colors, IconButton, Icons, Theme;
+import 'package:flutter/material.dart' show Colors, IconButton, Icons;
 import 'package:flutter/widgets.dart'
     show
         Border,
@@ -23,10 +23,13 @@ import 'package:flutter/widgets.dart'
         Widget;
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
+import 'package:orangelist/src/home/widgets/delete_alert_dialog.dart'
+    show showAlertBeforDeleting;
 import 'package:orangelist/src/home/widgets/line_through_text.dart'
     show LineThroughText;
 import 'package:orangelist/src/theme/colors.dart' show sandAccent, themeColor;
-import 'package:provider/provider.dart' show Consumer, ReadContext;
+import 'package:orangelist/src/theme/text_theme.dart' show sfTextTheme;
+import 'package:provider/provider.dart' show Consumer;
 
 class TaskTileWidget extends StatelessWidget {
   const TaskTileWidget({
@@ -60,10 +63,10 @@ class TaskTileWidget extends StatelessWidget {
         horizontal: 16,
       ),
       child: Consumer<TodoProvider>(
-        builder: (context, todo, child) {
-          bool buttonDisable = todo.todoIndex != -1;
-          bool isCompleted = todo.dailyToDolist[index].isCompleted;
-          bool forReorder = todo.isReorder;
+        builder: (context, todoProvider, child) {
+          bool buttonDisable = todoProvider.todoIndex != -1;
+          bool isCompleted = todoProvider.dailyToDolist[index].isCompleted;
+          bool forReorder = todoProvider.isReorder;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -74,7 +77,7 @@ class TaskTileWidget extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           isCompleted = !isCompleted;
-                          todo.updateTodoStatus(index, isCompleted);
+                          todoProvider.updateTodoStatus(index, isCompleted);
                         },
                         child: Container(
                           height: 26,
@@ -104,12 +107,11 @@ class TaskTileWidget extends StatelessWidget {
                         duration: const Duration(
                           milliseconds: 600,
                         ),
-                        textStyle:
-                            Theme.of(context).textTheme.titleLarge!.copyWith(
-                                  color: sandAccent,
-                                  fontWeight: FontWeight.w700,
-                                  decorationColor: sandAccent,
-                                ),
+                        textStyle: sfTextTheme.titleMedium!.copyWith(
+                          color: sandAccent,
+                          fontWeight: FontWeight.w700,
+                          decorationColor: sandAccent,
+                        ),
                         isCompleted: isCompleted,
                       ),
                     ),
@@ -128,7 +130,7 @@ class TaskTileWidget extends StatelessWidget {
                         onPressed: isCompleted
                             ? null
                             : () {
-                                context.read<TodoProvider>().todoIndex = index;
+                                todoProvider.todoIndex = index;
                               },
                         icon: Icon(
                           Icons.mode_edit_outline_outlined,
@@ -142,7 +144,11 @@ class TaskTileWidget extends StatelessWidget {
                         onPressed: buttonDisable
                             ? null
                             : () {
-                                todo.deleteTodo(index);
+                                showAlertBeforDeleting(
+                                  context,
+                                  todoProvider,
+                                  index,
+                                );
                               },
                         splashColor: Colors.red.withOpacity(0.8),
                         icon: Icon(

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show Icon, Icons, Theme;
+import 'package:flutter/material.dart' show Icon, Icons;
 import 'package:flutter/widgets.dart'
     show
         Border,
@@ -15,7 +15,9 @@ import 'package:flutter/widgets.dart'
         StatelessWidget,
         Text,
         Widget;
+
 import 'package:orangelist/src/theme/colors.dart' show sandAccent;
+import 'package:orangelist/src/theme/text_theme.dart' show sfTextTheme;
 
 class ReOrderTile extends StatelessWidget {
   const ReOrderTile({
@@ -53,11 +55,11 @@ class ReOrderTile extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    color: sandAccent,
-                    fontWeight: FontWeight.w700,
-                    decorationColor: sandAccent,
-                  ),
+              style: sfTextTheme.titleMedium!.copyWith(
+                color: sandAccent,
+                fontWeight: FontWeight.w700,
+                decorationColor: sandAccent,
+              ),
             ),
           ),
           ReorderableDragStartListener(

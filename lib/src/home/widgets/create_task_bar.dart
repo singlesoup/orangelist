@@ -1,7 +1,46 @@
-import 'package:flutter/material.dart';
-import 'package:orangelist/src/home/provider/todo_provider.dart';
-import 'package:orangelist/src/theme/colors.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart'
+    show
+        FloatingActionButton,
+        FocusNode,
+        Icons,
+        InputBorder,
+        InputDecoration,
+        State,
+        StatefulWidget,
+        TextEditingController,
+        TextField,
+        Tooltip;
+
+import 'package:flutter/widgets.dart'
+    show
+        Border,
+        BorderRadius,
+        BoxDecoration,
+        BuildContext,
+        Container,
+        EdgeInsets,
+        Expanded,
+        FontWeight,
+        Icon,
+        MainAxisAlignment,
+        Padding,
+        Radius,
+        RoundedRectangleBorder,
+        Row,
+        SizedBox,
+        TextPosition,
+        TextSelection,
+        ValueListenableBuilder,
+        ValueNotifier,
+        Widget;
+
+import 'package:orangelist/src/home/provider/todo_provider.dart'
+    show TodoProvider;
+import 'package:orangelist/src/theme/colors.dart'
+    show bgDark, sandAccent, themeColor;
+import 'package:orangelist/src/theme/text_theme.dart' show sfTextTheme;
+import 'package:provider/provider.dart' show Consumer, ReadContext;
 
 class CreateTaskBar extends StatefulWidget {
   const CreateTaskBar({
@@ -13,9 +52,49 @@ class CreateTaskBar extends StatefulWidget {
 }
 
 class _CreateTaskBarState extends State<CreateTaskBar> {
-  bool _isActive = false;
   final TextEditingController _controller = TextEditingController();
   final FocusNode focusN = FocusNode();
+  final ValueNotifier<String> _hoverText = ValueNotifier<String>('');
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.addListener(() {
+      _updateTooltipText(context);
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.removeListener(() => _updateTooltipText);
+    _controller.dispose();
+    _hoverText.dispose();
+    super.dispose();
+  }
+
+  void _updateTooltipText(BuildContext? context) {
+    var todoProvider = context?.read<TodoProvider>();
+    if (todoProvider?.todoIndex != -1 &&
+        _controller.text == todoProvider?.editTodo()) {
+      _controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: _controller.text.length),
+      );
+    }
+    if (kIsWeb) {
+      _hoverText.value = _controller.text;
+    }
+  }
+
+  // To only show tool tip msg for web
+  String toolTipMessage(String value) {
+    String text = '';
+    if (kIsWeb && value.isNotEmpty) {
+      text = value;
+    }
+
+    return text;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,55 +106,75 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _isActive = !_isActive;
-                });
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: sandAccent.withOpacity(0.1),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(22.0),
-                  ),
+            child: Container(
+              decoration: BoxDecoration(
+                color: sandAccent.withOpacity(0.1),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(22.0),
                 ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 3,
-                ),
-                child: Consumer<TodoProvider>(
-                  builder: (context, todo, child) {
-                    String editText = todo.editTodo();
+              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 3,
+              ),
+              child: Consumer<TodoProvider>(
+                builder: (context, todo, child) {
+                  String editText = todo.editTodo();
+                  if (_controller.text != editText) {
+                    // Defer setting text to ensure it doesn't interfere with the build process
                     _controller.text = editText;
-                    _isActive = true;
-                    return TextField(
-                      focusNode: focusN,
-                      controller: _controller,
-                      cursorColor: sandAccent,
-                      enabled: _isActive,
-                      decoration: InputDecoration(
-                        hintText: 'add your next task',
-                        hintStyle:
-                            Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                  color: sandAccent.withOpacity(0.6),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 6.0,
-                          horizontal: 14.0,
+                  }
+                  return ValueListenableBuilder<String>(
+                    valueListenable: _hoverText,
+                    builder: (context, value, child) {
+                      return Tooltip(
+                        padding: const EdgeInsets.all(12),
+                        message: toolTipMessage(value),
+                        preferBelow: true,
+                        verticalOffset: 30,
+                        textStyle: sfTextTheme.bodyLarge!.copyWith(
+                          color: sandAccent.withOpacity(0.6),
+                          fontWeight: FontWeight.w600,
                         ),
-                        border: InputBorder.none,
-                      ),
-                      // onChanged: (String value) {},
-                      // onSubmitted: (text) {},
-                      onTap: () {
-                        _controller.selection = TextSelection.collapsed(
-                            offset: _controller.text.length);
-                      },
-                    );
-                  },
-                ),
+                        decoration: BoxDecoration(
+                          color: bgDark,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(22.0),
+                          ),
+                          border: Border.all(
+                            color: sandAccent,
+                          ),
+                        ),
+                        child: TextField(
+                          focusNode: focusN,
+                          controller: _controller,
+                          cursorColor: sandAccent,
+                          enableInteractiveSelection: true,
+                          decoration: InputDecoration(
+                            hintText: 'add your next task',
+                            hintStyle: sfTextTheme.bodyLarge!.copyWith(
+                              color: sandAccent.withOpacity(0.6),
+                              fontWeight: FontWeight.w600,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 6.0,
+                              horizontal: 14.0,
+                            ),
+                            border: InputBorder.none,
+                          ),
+                          onSubmitted: (String val) {
+                            if (kIsWeb && val.isNotEmpty) {
+                              var todoProvider = context.read<TodoProvider>();
+                              if (todoProvider.todoIndex == -1) {
+                                todoProvider.addTodo(val);
+                              }
+                            }
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ),
@@ -96,9 +195,8 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  _isActive = false;
                                   focusN.unfocus();
-                                  _controller.text = '';
+                                  _controller.clear();
                                   todo.todoIndex = -1;
                                 });
                               },
@@ -123,13 +221,14 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                   borderRadius: BorderRadius.circular(28),
                 ),
                 onPressed: () {
-                  var todoProvider = context.read<TodoProvider>();
-                  setState(() {
-                    _isActive = true;
+                  if (_controller.text.isEmpty) {
                     if (!focusN.hasFocus) {
-                      focusN.requestFocus();
+                      setState(() {
+                        focusN.requestFocus();
+                      });
                     }
-
+                  } else {
+                    var todoProvider = context.read<TodoProvider>();
                     if (todoProvider.todoIndex == -1) {
                       todoProvider.addTodo(_controller.text);
                     } else {
@@ -137,8 +236,9 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                           todoProvider.todoIndex, _controller.text);
                       todoProvider.todoIndex = -1;
                     }
-                    _controller.text = '';
-                  });
+                    focusN.unfocus();
+                    _controller.clear();
+                  }
                 },
                 backgroundColor: themeColor,
                 child: const Icon(
