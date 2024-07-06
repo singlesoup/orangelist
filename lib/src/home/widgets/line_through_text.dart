@@ -88,7 +88,7 @@ class _LineThroughTextState extends State<LineThroughText>
     if (newText != null) {
       _textPainter = TextPainter(
         text: TextSpan(
-          text: widget.text,
+          text: newText,
           style: widget.textStyle.copyWith(
             color:
                 widget.isCompleted ? sandAccent.withOpacity(0.56) : sandAccent,
@@ -100,7 +100,7 @@ class _LineThroughTextState extends State<LineThroughText>
     }
     _textPainter.layout(maxWidth: MediaQuery.of(context).size.width);
     setState(() {
-      _textHeight = _textPainter.height * 2;
+      _textHeight = _textPainter.height * 2.8;
     });
   }
 

@@ -24,31 +24,37 @@ class WebAppOutlineWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: bgDark,
-      child: LayoutBuilder(builder: (context, constraints) {
-        // debugPrint(constraints.maxWidth.toString());
-        return Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: constraints.maxWidth < 580
-                ? constraints.maxWidth < 450
-                    ? constraints.maxWidth * 0.02
-                    : constraints.maxWidth * 0.1
-                : constraints.maxWidth < 939
-                    ? constraints.maxWidth * 0.18
-                    : constraints.maxWidth > 940 && constraints.maxWidth < 1310
-                        ? constraints.maxWidth * 0.28
-                        : constraints.maxWidth * 0.36,
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              color: sandAccent.withOpacity(0.4),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(22.0),
-              ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // debugPrint(constraints.maxWidth.toString());
+          double horizontalPadding;
+          if (constraints.maxWidth < 450) {
+            horizontalPadding = constraints.maxWidth * 0.02;
+          } else if (constraints.maxWidth < 580) {
+            horizontalPadding = constraints.maxWidth * 0.1;
+          } else if (constraints.maxWidth < 939) {
+            horizontalPadding = constraints.maxWidth * 0.18;
+          } else if (constraints.maxWidth < 1310) {
+            horizontalPadding = constraints.maxWidth * 0.22;
+          } else {
+            horizontalPadding = constraints.maxWidth * 0.36;
+          }
+          return Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
             ),
-            child: child,
-          ),
-        );
-      }),
+            child: Container(
+              decoration: BoxDecoration(
+                color: sandAccent.withOpacity(0.4),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(22.0),
+                ),
+              ),
+              child: child,
+            ),
+          );
+        },
+      ),
     );
   }
 }

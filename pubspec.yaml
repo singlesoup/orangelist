@@ -15,6 +15,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_platform_widgets: ^7.0.0
   flutter_svg: ^1.1.5
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -36,16 +37,20 @@ flutter:
     - assets/images/monthlyOverview.svg
     - assets/images/dragAndOrder.svg
 
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Nunito-Medium.ttf
+          weight: 500
 
-fonts:
-  - family: Nunito
-    fonts:
-      - asset: assets/fonts/Nunito-Regular.ttf
-        weight: 400
-      - asset: assets/fonts/Nunito-Medium.ttf
-        weight: 500
+    - family: LibreBaskerville
+      fonts:
+        - asset: assets/fonts/LibreBaskerville-Bold.ttf
+          weight: 700
 
-  - family: LibreBaskerville
-    fonts:
-      - asset: assets/fonts/LibreBaskerville-Bold.ttf
-        weight: 700
+    - family: Majoris
+      fonts:
+        - asset: assets/fonts/Majoris.ttf
+          weight: 700

@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:orangelist/src/theme/colors.dart';
+import 'package:flutter/material.dart' show FontWeight, TextStyle, TextTheme;
+import 'package:orangelist/src/theme/colors.dart' show sandAccent;
 
 TextTheme sfTextTheme = const TextTheme(
   // headline1
   displayLarge: TextStyle(
-    fontFamily: 'LibreBaskerville',
+    fontFamily: 'Majoris',
     fontSize: 96.0,
     fontWeight: FontWeight.w300,
     letterSpacing: -1.5,
@@ -12,7 +12,7 @@ TextTheme sfTextTheme = const TextTheme(
   ),
   // headline2
   displayMedium: TextStyle(
-    fontFamily: 'LibreBaskerville',
+    fontFamily: 'Majoris',
     fontSize: 60.0,
     fontWeight: FontWeight.w300,
     letterSpacing: -0.5,
@@ -20,7 +20,7 @@ TextTheme sfTextTheme = const TextTheme(
   ),
   // headline3
   displaySmall: TextStyle(
-    fontFamily: 'LibreBaskerville',
+    fontFamily: 'Majoris',
     fontSize: 48.0,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.0,
@@ -28,7 +28,7 @@ TextTheme sfTextTheme = const TextTheme(
   ),
   // headline4
   headlineMedium: TextStyle(
-    fontFamily: 'LibreBaskerville',
+    fontFamily: 'Majoris',
     fontSize: 34.0,
     fontWeight: FontWeight.w800,
     letterSpacing: 0.25,
@@ -36,7 +36,7 @@ TextTheme sfTextTheme = const TextTheme(
   ),
   // headline5
   headlineSmall: TextStyle(
-    fontFamily: 'LibreBaskerville',
+    fontFamily: 'Majoris',
     fontSize: 24.0,
     fontWeight: FontWeight.w800,
     letterSpacing: 0.0,
@@ -44,7 +44,7 @@ TextTheme sfTextTheme = const TextTheme(
   ),
   // headline6
   titleLarge: TextStyle(
-    fontFamily: 'LibreBaskerville',
+    fontFamily: 'Majoris',
     fontSize: 20.0,
     fontWeight: FontWeight.bold,
     letterSpacing: 0.15,
@@ -84,7 +84,7 @@ TextTheme sfTextTheme = const TextTheme(
   ),
   // button
   labelLarge: TextStyle(
-    fontFamily: 'LibreBaskerville',
+    fontFamily: 'Majoris',
     fontSize: 14.0,
     fontWeight: FontWeight.w600,
     letterSpacing: 1.25,
@@ -92,7 +92,7 @@ TextTheme sfTextTheme = const TextTheme(
   ),
   // caption
   bodySmall: TextStyle(
-    fontFamily: 'LibreBaskerville',
+    fontFamily: 'Majoris',
     fontSize: 12.0,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.4,
@@ -100,7 +100,7 @@ TextTheme sfTextTheme = const TextTheme(
   ),
   // overline
   labelSmall: TextStyle(
-    fontFamily: 'LibreBaskerville',
+    fontFamily: 'Majoris',
     fontSize: 10.0,
     fontWeight: FontWeight.w400,
     letterSpacing: 1.5,
