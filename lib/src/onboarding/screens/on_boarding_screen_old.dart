@@ -139,7 +139,7 @@ class _OnBoardingScreenOldState extends State<OnBoardingScreenOld> {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                     builder: (context) => Container(),
-                                    //TODO: Return HomeScreen here
+                                    //TODO (@singlesoup): Return HomeScreen here
                                   ),
                                 );
                               },
