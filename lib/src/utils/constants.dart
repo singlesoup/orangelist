@@ -1,11 +1,11 @@
 const String onBoardingMainDesc =
-    "Creating a Todos Check list is probably the best productivity habit that any one can adopt.\n\nIt gives a mental clarity on how you will be spending your day. What could be the task that would take most of your time?\n\nThis way you don’t feel that you are forgetting some important task, as you can list it when you still remember it.\n\nThe best way to approach while setting a priority is to set the most important task as the first task you pick. This will boost your overall morale for the day for this small mini feat that you completed.";
+    "Self journaling is not just about documenting what happened that day, week or month. It's about reflection, what went right or what went wrong. In this app you have the option to not only document the Past, Present but also Future.\n\nStart getting to know yourself (again). 💪";
 
-const String itsFree =
-    "Creating a todo list is a very personal thing. And it should stay that way, which is why this app is completely offline.";
+const String obPastDesc =
+    "You can select any past date and add new thoughts or update whatever you already wrote.";
 
-const String monthlyTaskOverview =
-    "This will show you the overview of the present task on top and all the past ones in a decending order.";
+const String obPresent =
+    "The settings for this will be default. Just select the option of Present and start writing, date will be set to present date.";
 
 const String obFuture =
-    "Sometimes we just want to enter task in any order just to get them out of our mind. And that's how it should be. Well want to set priority to them — just drag";
+    "This is the best part of this app, here you can select any date in the future and write anything whatever you aim to be, at that point in the future. The ones from the future will be pinned, so that you can path corrects syourself if you are deviating.";

@@ -1,109 +1,82 @@
-import 'package:flutter/material.dart' show FontWeight, TextStyle, TextTheme;
-import 'package:orangelist/src/theme/colors.dart' show sandAccent;
+import 'package:flutter/material.dart';
 
-TextTheme sfTextTheme = const TextTheme(
-  // headline1
-  displayLarge: TextStyle(
-    fontFamily: 'Majoris',
+const TextTheme sfTextTheme = TextTheme(
+  headline1: TextStyle(
+    fontFamily: 'EncodeSans',
     fontSize: 96.0,
     fontWeight: FontWeight.w300,
     letterSpacing: -1.5,
-    color: sandAccent,
   ),
-  // headline2
-  displayMedium: TextStyle(
-    fontFamily: 'Majoris',
+  headline2: TextStyle(
+    fontFamily: 'EncodeSans',
     fontSize: 60.0,
     fontWeight: FontWeight.w300,
     letterSpacing: -0.5,
-    color: sandAccent,
   ),
-  // headline3
-  displaySmall: TextStyle(
-    fontFamily: 'Majoris',
+  headline3: TextStyle(
+    fontFamily: 'EncodeSans',
     fontSize: 48.0,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.0,
-    color: sandAccent,
   ),
-  // headline4
-  headlineMedium: TextStyle(
-    fontFamily: 'Majoris',
+  headline4: TextStyle(
+    fontFamily: 'EncodeSans',
     fontSize: 34.0,
     fontWeight: FontWeight.w800,
     letterSpacing: 0.25,
-    color: sandAccent,
   ),
-  // headline5
-  headlineSmall: TextStyle(
-    fontFamily: 'Majoris',
+  headline5: TextStyle(
+    fontFamily: 'EncodeSans',
     fontSize: 24.0,
     fontWeight: FontWeight.w800,
     letterSpacing: 0.0,
-    color: sandAccent,
   ),
-  // headline6
-  titleLarge: TextStyle(
-    fontFamily: 'Majoris',
+  headline6: TextStyle(
+    fontFamily: 'EncodeSans',
     fontSize: 20.0,
     fontWeight: FontWeight.bold,
     letterSpacing: 0.15,
-    color: sandAccent,
   ),
-  // subtitle1
-  titleMedium: TextStyle(
-    fontFamily: 'Nunito',
+  subtitle1: TextStyle(
+    fontFamily: 'Montserrat',
     fontSize: 16.0,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.15,
-    color: sandAccent,
   ),
-  // subtitle2
-  titleSmall: TextStyle(
-    fontFamily: 'Nunito',
+  subtitle2: TextStyle(
+    fontFamily: 'Montserrat',
     fontSize: 14.0,
     fontWeight: FontWeight.w500,
     letterSpacing: 0.1,
-    color: sandAccent,
   ),
-  // bodyText1
-  bodyLarge: TextStyle(
-    fontFamily: 'Nunito',
+  bodyText1: TextStyle(
+    fontFamily: 'Montserrat',
     fontSize: 16.0,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.5,
-    color: sandAccent,
   ),
-  // bodyText2
-  bodyMedium: TextStyle(
-    fontFamily: 'Nunito',
+  bodyText2: TextStyle(
+    fontFamily: 'Montserrat',
     fontSize: 14.0,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.25,
-    color: sandAccent,
   ),
-  // button
-  labelLarge: TextStyle(
-    fontFamily: 'Majoris',
+  button: TextStyle(
+    fontFamily: 'Lato',
     fontSize: 14.0,
     fontWeight: FontWeight.w600,
     letterSpacing: 1.25,
-    color: sandAccent,
   ),
-  // caption
-  bodySmall: TextStyle(
-    fontFamily: 'Majoris',
+  caption: TextStyle(
+    fontFamily: 'Lato',
     fontSize: 12.0,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.4,
-    color: sandAccent,
   ),
-  // overline
-  labelSmall: TextStyle(
-    fontFamily: 'Majoris',
+  overline: TextStyle(
+    fontFamily: 'Lato',
     fontSize: 10.0,
     fontWeight: FontWeight.w400,
     letterSpacing: 1.5,
-    color: sandAccent,
   ),
 );
