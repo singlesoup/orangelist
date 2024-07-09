@@ -77,7 +77,11 @@ class TaskTileWidget extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           isCompleted = !isCompleted;
-                          todoProvider.updateTodoStatus(index, isCompleted);
+                          todoProvider.updateTodoStatus(
+                            index,
+                            isCompleted,
+                            context,
+                          );
                         },
                         child: Container(
                           height: 26,

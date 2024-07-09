@@ -1,6 +1,9 @@
-import 'package:flutter/widgets.dart' show ChangeNotifier;
+import 'package:flutter/widgets.dart' show BuildContext, ChangeNotifier;
+import 'package:orangelist/src/constants/strings.dart'
+    show todoAddedTxt, todoDeletedTxt, todoUpdatedTxt;
 import 'package:orangelist/src/home/data/todo_list.dart' show TodoList;
 import 'package:orangelist/src/home/data/todo_model.dart' show TodoModel;
+import 'package:orangelist/src/home/widgets/flushbar/custom_flushbar.dart';
 import 'package:orangelist/src/utils/hive_service.dart'
     show getTodos, putTodo, updateHiveTodo;
 
@@ -30,7 +33,7 @@ class TodoProvider extends ChangeNotifier {
     _dailyToDolist = hiveList.todos!;
   }
 
-  void addTodo(String todo) {
+  void addTodo(String todo, BuildContext context) {
     if (todo.isEmpty) {
       throw ArgumentError("Todo text cannot be empty!");
     }
@@ -39,6 +42,7 @@ class TodoProvider extends ChangeNotifier {
       isCompleted: false,
     ));
     putTodo(TodoList(todos: _dailyToDolist));
+    showCustomFlushBar(context, todoAddedTxt);
     notifyListeners();
   }
 
@@ -46,16 +50,17 @@ class TodoProvider extends ChangeNotifier {
     return _todoIndex == -1 ? '' : _dailyToDolist[_todoIndex].title;
   }
 
-  void deleteTodo(int index) {
+  void deleteTodo(int index, BuildContext context) {
     if (index < 0 || index >= _dailyToDolist.length) {
       throw RangeError("Invalid index provided for deletion!");
     }
     _dailyToDolist.removeAt(index);
     putTodo(TodoList(todos: _dailyToDolist));
+    showCustomFlushBar(context, todoDeletedTxt);
     notifyListeners();
   }
 
-  void updateTodo(int index, String newText) {
+  void updateTodo(int index, String newText, BuildContext context) {
     if (index < 0 || index >= _dailyToDolist.length) {
       throw RangeError("Invalid index provided for update!");
     }
@@ -67,10 +72,11 @@ class TodoProvider extends ChangeNotifier {
       index: index,
       title: newText,
     );
+    showCustomFlushBar(context, todoUpdatedTxt);
     notifyListeners();
   }
 
-  updateTodoStatus(int index, bool isCompleted) {
+  updateTodoStatus(int index, bool isCompleted, BuildContext context) {
     if (index < 0 || index >= _dailyToDolist.length) {
       throw RangeError("Invalid index provided for update!");
     }
@@ -84,6 +90,7 @@ class TodoProvider extends ChangeNotifier {
       index: index,
       isCompleted: isCompleted,
     );
+    showCustomFlushBar(context, todoUpdatedTxt);
     notifyListeners();
   }
 
@@ -97,14 +104,7 @@ class TodoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  onReorder(int oldIndex, int newIndex) {
-    // if (oldIndex < 0 || oldIndex >= _dailyToDolist.length) {
-    //   throw RangeError("Invalid oldIndex $oldIndex provided for update!");
-    // }
-
-    // if (newIndex < 0 || newIndex >= _dailyToDolist.length) {
-    //   throw RangeError("Invalid newIndex $newIndex provided for update!");
-    // }
+  onReorder(int oldIndex, int newIndex, BuildContext context) {
     if (newIndex > oldIndex) {
       newIndex -= 1;
     }
@@ -114,7 +114,6 @@ class TodoProvider extends ChangeNotifier {
     _dailyToDolist.insert(newIndex, item);
 
     putTodo(TodoList(todos: _dailyToDolist));
-
     notifyListeners();
   }
 }

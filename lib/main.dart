@@ -24,11 +24,15 @@ void main() {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await initHive();
-    SystemChrome.setPreferredOrientations(
-            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-        .then((_) {
+    if (!kIsWeb) {
+      SystemChrome.setPreferredOrientations(
+              [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+          .then((_) {
+        runApp(const MyApp());
+      });
+    } else {
       runApp(const MyApp());
-    });
+    }
   }, (error, stack) {
     // Use firebase crashlytics if added
   });

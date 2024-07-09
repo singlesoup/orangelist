@@ -68,7 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ? ReorderableListView(
                               shrinkWrap: true,
                               onReorder: (int oldIndex, int newIndex) {
-                                todoprovider.onReorder(oldIndex, newIndex);
+                                todoprovider.onReorder(
+                                  oldIndex,
+                                  newIndex,
+                                  context,
+                                );
                               },
                               buildDefaultDragHandles: false,
                               children: [

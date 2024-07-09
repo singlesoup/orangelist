@@ -3,7 +3,6 @@ import 'package:flutter/material.dart'
     show
         FloatingActionButton,
         FocusNode,
-        Icons,
         InputBorder,
         InputDecoration,
         State,
@@ -22,7 +21,6 @@ import 'package:flutter/widgets.dart'
         EdgeInsets,
         Expanded,
         FontWeight,
-        Icon,
         MainAxisAlignment,
         Padding,
         Radius,
@@ -34,6 +32,9 @@ import 'package:flutter/widgets.dart'
         ValueListenableBuilder,
         ValueNotifier,
         Widget;
+
+import 'package:font_awesome_flutter/font_awesome_flutter.dart'
+    show FaIcon, FontAwesomeIcons;
 
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
@@ -166,7 +167,7 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                             if (kIsWeb && val.isNotEmpty) {
                               var todoProvider = context.read<TodoProvider>();
                               if (todoProvider.todoIndex == -1) {
-                                todoProvider.addTodo(val);
+                                todoProvider.addTodo(val, context);
                               }
                             }
                           },
@@ -201,11 +202,10 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                                 });
                               },
                               backgroundColor: themeColor,
-                              child: const Icon(
-                                Icons.close,
+                              child: const FaIcon(
+                                FontAwesomeIcons.xmark,
                                 color: bgDark,
-                                size: 34,
-                                weight: 22,
+                                size: 32,
                               ),
                             ),
                             const SizedBox(
@@ -230,10 +230,10 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                   } else {
                     var todoProvider = context.read<TodoProvider>();
                     if (todoProvider.todoIndex == -1) {
-                      todoProvider.addTodo(_controller.text);
+                      todoProvider.addTodo(_controller.text, context);
                     } else {
                       todoProvider.updateTodo(
-                          todoProvider.todoIndex, _controller.text);
+                          todoProvider.todoIndex, _controller.text, context);
                       todoProvider.todoIndex = -1;
                     }
                     focusN.unfocus();
@@ -241,10 +241,11 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                   }
                 },
                 backgroundColor: themeColor,
-                child: const Icon(
-                  Icons.add_rounded,
+                child: const FaIcon(
+                  FontAwesomeIcons.plus,
                   color: bgDark,
-                  size: 38,
+                  size: 32,
+                  // todo: find apt size for icons
                 ),
               ),
             ],

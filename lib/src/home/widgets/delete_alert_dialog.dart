@@ -33,8 +33,10 @@ showAlertBeforDeleting(
         ),
         PlatformDialogAction(
           onPressed: () {
-            todo.deleteTodo(index);
             Navigator.of(context).pop();
+            if (context.mounted) {
+              todo.deleteTodo(index, context);
+            }
           },
           child: Text(
             'Ok',
