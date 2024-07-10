@@ -7,5 +7,5 @@ The To-Do List App is designed to help users enhance their productivity by creat
 ## References (without which this app won't be as awesome)
 
 - Illustrations: [Phonies by DrawKit Vector Illustrations](https://www.drawkit.com/illustrations/phonies-illustrations)
-- Design by [Burhanul Islam](https://dribbble.com/shots/22604632-Todo-Website-Todo-App)
+- App Design inspiration by [Burhanul Islam](https://dribbble.com/shots/22604632-Todo-Website-Todo-App)
 - Font by [Bernd Montag](https://www.fontzillion.com/fonts/bernd-montag/majoris)
