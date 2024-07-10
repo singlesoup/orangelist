@@ -21,6 +21,7 @@ import 'package:orangelist/src/home/provider/todo_provider.dart'
 import 'package:orangelist/src/home/widgets/about_banner.dart' show AboutBanner;
 import 'package:orangelist/src/home/widgets/create_task_bar.dart'
     show CreateTaskBar;
+import 'package:orangelist/src/home/widgets/no_todo.dart';
 import 'package:orangelist/src/home/widgets/reorder_tile.dart' show ReOrderTile;
 import 'package:orangelist/src/home/widgets/task_tile_widget.dart'
     show TaskTileWidget;
@@ -64,40 +65,44 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Consumer<TodoProvider>(
                     builder: (context, todoprovider, child) {
                       bool isReordering = todoprovider.isReorder;
-                      return isReordering
-                          ? ReorderableListView(
-                              shrinkWrap: true,
-                              onReorder: (int oldIndex, int newIndex) {
-                                todoprovider.onReorder(
-                                  oldIndex,
-                                  newIndex,
-                                  context,
+                      return todoprovider.dailyToDolist.isEmpty
+                          ? const NoTodos()
+                          : isReordering &&
+                                  todoprovider.dailyToDolist.length > 1
+                              ? ReorderableListView(
+                                  shrinkWrap: true,
+                                  onReorder: (int oldIndex, int newIndex) {
+                                    todoprovider.onReorder(
+                                      oldIndex,
+                                      newIndex,
+                                      context,
+                                    );
+                                  },
+                                  buildDefaultDragHandles: false,
+                                  children: [
+                                    for (int index = 0;
+                                        index <
+                                            todoprovider.dailyToDolist.length;
+                                        index++)
+                                      ReOrderTile(
+                                        key: Key('$index'),
+                                        index: index,
+                                        title: todoprovider
+                                            .dailyToDolist[index].title,
+                                      ),
+                                  ],
+                                )
+                              : ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: todoprovider.dailyToDolist.length,
+                                  itemBuilder: (context, index) {
+                                    return TaskTileWidget(
+                                      taskTitle: todoprovider
+                                          .dailyToDolist[index].title,
+                                      index: index,
+                                    );
+                                  },
                                 );
-                              },
-                              buildDefaultDragHandles: false,
-                              children: [
-                                for (int index = 0;
-                                    index < todoprovider.dailyToDolist.length;
-                                    index++)
-                                  ReOrderTile(
-                                    key: Key('$index'),
-                                    index: index,
-                                    title:
-                                        todoprovider.dailyToDolist[index].title,
-                                  ),
-                              ],
-                            )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: todoprovider.dailyToDolist.length,
-                              itemBuilder: (context, index) {
-                                return TaskTileWidget(
-                                  taskTitle:
-                                      todoprovider.dailyToDolist[index].title,
-                                  index: index,
-                                );
-                              },
-                            );
                     },
                   ),
                 ),

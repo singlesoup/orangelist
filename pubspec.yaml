@@ -17,7 +17,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_platform_widgets: ^7.0.0
-  flutter_svg: ^1.1.5
+  flutter_svg: ^2.0.9
   font_awesome_flutter: ^10.7.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -38,6 +38,7 @@ flutter:
     - assets/images/happy.svg
     - assets/images/monthlyOverview.svg
     - assets/images/dragAndOrder.svg
+    - assets/svgs/
 
   fonts:
     - family: Nunito
