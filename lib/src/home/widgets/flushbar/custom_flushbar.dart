@@ -24,7 +24,7 @@ void showCustomFlushBar(BuildContext context, String message) {
           right: 12,
         ),
         child: FaIcon(
-          FontAwesomeIcons.info,
+          FontAwesomeIcons.checkDouble,
           color: sandAccent,
           size: 22,
         ),

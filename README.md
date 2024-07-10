@@ -1,16 +1,11 @@
-# Orangelist
+# Orangelist - The Todo App
 
-A new Flutter project.
+## Description
 
-## Getting Started
+The To-Do List App is designed to help users enhance their productivity by creating and managing task lists. This app provides mental clarity on how you will be spending your day by allowing you to list and prioritize your tasks, ensuring you don't forget important tasks. It helps you focus on completing the most critical tasks first, boosting your overall morale.
 
-This project is a starting point for a Flutter application.
+## References (without which this app won't be as awesome)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Illustrations: [Phonies by DrawKit Vector Illustrations](https://www.drawkit.com/illustrations/phonies-illustrations)
+- Design by [Burhanul Islam](https://dribbble.com/shots/22604632-Todo-Website-Todo-App)
+- Font by [Bernd Montag](https://www.fontzillion.com/fonts/bernd-montag/majoris)

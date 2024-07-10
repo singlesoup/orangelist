@@ -35,6 +35,7 @@ import 'package:flutter/widgets.dart'
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FaIcon, FontAwesomeIcons;
+import 'package:orangelist/src/constants/strings.dart' show hintText;
 
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
@@ -152,7 +153,7 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                           cursorColor: sandAccent,
                           enableInteractiveSelection: true,
                           decoration: InputDecoration(
-                            hintText: 'add your next task',
+                            hintText: hintText,
                             hintStyle: sfTextTheme.bodyLarge!.copyWith(
                               color: sandAccent.withOpacity(0.6),
                               fontWeight: FontWeight.w600,
