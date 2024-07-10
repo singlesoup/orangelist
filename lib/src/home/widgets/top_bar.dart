@@ -21,8 +21,7 @@ import 'package:flutter/widgets.dart'
         Row,
         StatelessWidget,
         Text,
-        Widget,
-        debugPrint;
+        Widget;
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/home/widgets/reorder_switch.dart'
@@ -83,9 +82,6 @@ class TopBar extends StatelessWidget {
               ),
             ],
           ),
-          // SizedBox(
-          //   width: 6,
-          // ),
           Expanded(
             child: Align(
               alignment: Alignment.centerRight,
@@ -93,7 +89,6 @@ class TopBar extends StatelessWidget {
                 builder: (context, todoprovider, child) {
                   int completedCount = todoprovider.completedCount;
                   int totalLength = todoprovider.dailyToDolist.length;
-                  debugPrint('radius: ${55}');
                   return CircleAvatar(
                     radius: 55,
                     backgroundColor: themeColor,
