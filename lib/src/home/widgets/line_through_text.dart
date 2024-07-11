@@ -8,7 +8,6 @@ import 'package:flutter/widgets.dart'
         Curve,
         CurvedAnimation,
         CustomPaint,
-        MediaQuery,
         SingleTickerProviderStateMixin,
         SizedBox,
         State,
@@ -22,6 +21,8 @@ import 'package:flutter/widgets.dart'
 import 'package:orangelist/src/home/widgets/painter/strike_through_painter.dart'
     show StrikeThroughPainter;
 import 'package:orangelist/src/theme/colors.dart' show sandAccent;
+import 'package:orangelist/src/utils/global_size.dart'
+    show GlobalMediaQuerySize;
 
 class LineThroughText extends StatefulWidget {
   const LineThroughText({
@@ -98,7 +99,7 @@ class _LineThroughTextState extends State<LineThroughText>
         maxLines: null,
       );
     }
-    _textPainter.layout(maxWidth: MediaQuery.of(context).size.width);
+    _textPainter.layout(maxWidth: GlobalMediaQuerySize.screenWidth!);
     setState(() {
       _textHeight = _textPainter.height * 2.8;
     });

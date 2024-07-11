@@ -12,6 +12,8 @@ import 'package:orangelist/src/home/provider/todo_provider.dart'
 import 'package:orangelist/src/home/screens/homescreen.dart' show HomeScreen;
 import 'package:orangelist/src/home/widgets/web_app_outline_widget.dart'
     show WebAppOutlineWidget;
+import 'package:orangelist/src/utils/global_size.dart'
+    show GlobalMediaQuerySize;
 
 import 'package:orangelist/src/utils/hive_service.dart' show initHive;
 import 'package:provider/provider.dart'
@@ -43,6 +45,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalMediaQuerySize globalSize = GlobalMediaQuerySize();
+    globalSize.init(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
