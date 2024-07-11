@@ -33,15 +33,17 @@ class _OnBoardingScreenOldState extends State<OnBoardingScreenOld> {
         color: isActive ? themeColor : themeColor.withOpacity(0.4),
         borderRadius: BorderRadius.circular(16),
       ),
-      height: Global.screenHeight! * 0.02,
-      width: isActive ? Global.screenWidth! * 0.06 : Global.screenWidth! * 0.04,
+      height: GlobalMediaQuerySize.screenHeight! * 0.02,
+      width: isActive
+          ? GlobalMediaQuerySize.screenWidth! * 0.06
+          : GlobalMediaQuerySize.screenWidth! * 0.04,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    Global global = Global();
-    global.init(context);
+    GlobalMediaQuerySize globalSize = GlobalMediaQuerySize();
+    globalSize.init(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -51,7 +53,7 @@ class _OnBoardingScreenOldState extends State<OnBoardingScreenOld> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(
-              height: Global.screenHeight! * 0.7,
+              height: GlobalMediaQuerySize.screenHeight! * 0.7,
               child: PageView(
                 physics: const BouncingScrollPhysics(),
                 controller: _pageController,

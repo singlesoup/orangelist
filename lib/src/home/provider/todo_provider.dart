@@ -3,7 +3,8 @@ import 'package:orangelist/src/constants/strings.dart'
     show todoAddedTxt, todoDeletedTxt, todoUpdatedTxt;
 import 'package:orangelist/src/home/data/todo_list.dart' show TodoList;
 import 'package:orangelist/src/home/data/todo_model.dart' show TodoModel;
-import 'package:orangelist/src/home/widgets/flushbar/custom_flushbar.dart';
+import 'package:orangelist/src/home/widgets/flushbar/custom_flushbar.dart'
+    show showCustomFlushBar;
 import 'package:orangelist/src/utils/hive_service.dart'
     show getTodos, putTodo, updateHiveTodo;
 
@@ -31,6 +32,11 @@ class TodoProvider extends ChangeNotifier {
   void getData() {
     TodoList hiveList = getTodos();
     _dailyToDolist = hiveList.todos!;
+    updateCompletedCount();
+  }
+
+  void updateCompletedCount() {
+    _completedCount = _dailyToDolist.where((todo) => todo.isCompleted).length;
   }
 
   void addTodo(String todo, BuildContext context) {
@@ -55,6 +61,7 @@ class TodoProvider extends ChangeNotifier {
       throw RangeError("Invalid index provided for deletion!");
     }
     _dailyToDolist.removeAt(index);
+    updateCompletedCount();
     putTodo(TodoList(todos: _dailyToDolist));
     showCustomFlushBar(context, todoDeletedTxt);
     notifyListeners();
@@ -81,11 +88,8 @@ class TodoProvider extends ChangeNotifier {
       throw RangeError("Invalid index provided for update!");
     }
     _dailyToDolist[index].isCompleted = isCompleted;
-    if (isCompleted) {
-      _completedCount++;
-    } else {
-      _completedCount--;
-    }
+    updateCompletedCount();
+
     updateHiveTodo(
       index: index,
       isCompleted: isCompleted,

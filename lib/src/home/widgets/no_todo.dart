@@ -12,7 +12,6 @@ import 'package:flutter/widgets.dart'
         Expanded,
         MainAxisAlignment,
         MainAxisSize,
-        MediaQuery,
         Padding,
         Radius,
         SizedBox,
@@ -24,6 +23,8 @@ import 'package:flutter_svg/svg.dart' show SvgPicture;
 import 'package:orangelist/src/constants/strings.dart';
 import 'package:orangelist/src/theme/colors.dart' show sandAccent;
 import 'package:orangelist/src/theme/text_theme.dart' show sfTextTheme;
+import 'package:orangelist/src/utils/global_size.dart'
+    show GlobalMediaQuerySize;
 
 class NoTodos extends StatelessWidget {
   const NoTodos({super.key});
@@ -32,9 +33,8 @@ class NoTodos extends StatelessWidget {
   Widget build(BuildContext context) {
     final random = Random();
     final randomSvgIndex = random.nextInt(8) + 1;
-    var mediaQ = MediaQuery.of(context).size;
     return Container(
-      height: mediaQ.height * 0.44,
+      height: GlobalMediaQuerySize.screenHeight! * 0.44,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
           Radius.circular(22.0),

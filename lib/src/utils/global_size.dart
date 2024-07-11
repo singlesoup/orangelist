@@ -1,13 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart' show BuildContext, MediaQuery, Size;
 
-class Global {
-  static MediaQueryData? mediaQuery;
+class GlobalMediaQuerySize {
+  static Size? size;
   static double? screenWidth;
   static double? screenHeight;
 
+  /// Since ` MediaQuery.sizeOf()` will only notify when the size changes
+  /// so use this instead of `MediaQuery.of(context),size`
   void init(BuildContext context) {
-    mediaQuery = MediaQuery.of(context);
-    screenWidth = mediaQuery!.size.width;
-    screenHeight = mediaQuery!.size.height;
+    size = MediaQuery.sizeOf(context);
+    screenWidth = size!.width;
+    screenHeight = size!.height;
   }
 }
