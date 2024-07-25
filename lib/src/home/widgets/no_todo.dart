@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart'
         Container,
         EdgeInsets,
         Expanded,
+        Flexible,
         MainAxisAlignment,
         MainAxisSize,
         Padding,
@@ -20,7 +21,7 @@ import 'package:flutter/widgets.dart'
         TextAlign,
         Widget;
 import 'package:flutter_svg/svg.dart' show SvgPicture;
-import 'package:orangelist/src/constants/strings.dart';
+import 'package:orangelist/src/constants/strings.dart' show noTodosStr;
 import 'package:orangelist/src/theme/colors.dart' show sandAccent;
 import 'package:orangelist/src/theme/text_theme.dart' show sfTextTheme;
 import 'package:orangelist/src/utils/global_size.dart'
@@ -52,6 +53,7 @@ class NoTodos extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
+            flex: 2,
             child: Container(
               margin: const EdgeInsets.all(10),
               decoration: const BoxDecoration(
@@ -66,16 +68,18 @@ class NoTodos extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 6),
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 10.0,
-              left: 12,
-              right: 12,
-            ),
-            child: Text(
-              noTodosStr,
-              style: sfTextTheme.titleLarge,
-              textAlign: TextAlign.center,
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                bottom: 10.0,
+                left: 12,
+                right: 12,
+              ),
+              child: Text(
+                noTodosStr,
+                style: sfTextTheme.titleLarge,
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
         ],
