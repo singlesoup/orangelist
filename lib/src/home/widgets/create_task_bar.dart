@@ -88,9 +88,9 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
   }
 
   // To only show tool tip msg for web
-  String toolTipMessage(String value) {
+  String toolTipMessage(String value, String editText) {
     String text = '';
-    if (kIsWeb && value.isNotEmpty) {
+    if (kIsWeb && value.isNotEmpty && editText.isNotEmpty) {
       text = value;
     }
 
@@ -131,7 +131,7 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                     builder: (context, value, child) {
                       return Tooltip(
                         padding: const EdgeInsets.all(12),
-                        message: toolTipMessage(value),
+                        message: toolTipMessage(value, editText),
                         preferBelow: true,
                         verticalOffset: 30,
                         textStyle: sfTextTheme.bodyLarge!.copyWith(

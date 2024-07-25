@@ -27,6 +27,7 @@ class AboutBanner extends StatelessWidget {
           Radius.circular(22.0),
         ),
       ),
+      width: double.infinity,
       padding: const EdgeInsets.symmetric(
         horizontal: 8,
         vertical: 3,

@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart' show Colors, IconButton, Icons;
+import 'package:flutter/material.dart' show Colors, IconButton;
 import 'package:flutter/widgets.dart'
     show
         Border,
         BorderRadius,
+        BoxConstraints,
         BoxDecoration,
         BoxShape,
         BuildContext,
@@ -13,7 +14,6 @@ import 'package:flutter/widgets.dart'
         Expanded,
         FontWeight,
         GestureDetector,
-        Icon,
         MainAxisAlignment,
         Radius,
         Row,
@@ -21,6 +21,8 @@ import 'package:flutter/widgets.dart'
         SizedBox,
         StatelessWidget,
         Widget;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart'
+    show FaIcon, FontAwesomeIcons;
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/home/widgets/delete_alert_dialog.dart'
@@ -65,7 +67,9 @@ class TaskTileWidget extends StatelessWidget {
       child: Consumer<TodoProvider>(
         builder: (context, todoProvider, child) {
           bool buttonDisable = todoProvider.todoIndex != -1;
-          bool isCompleted = todoProvider.dailyToDolist[index].isCompleted;
+          bool isCompleted = todoProvider.dailyToDolist.isEmpty
+              ? false
+              : todoProvider.dailyToDolist[index].isCompleted;
           bool forReorder = todoProvider.isReorder;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -136,12 +140,14 @@ class TaskTileWidget extends StatelessWidget {
                             : () {
                                 todoProvider.todoIndex = index;
                               },
-                        icon: Icon(
-                          Icons.mode_edit_outline_outlined,
+                        icon: FaIcon(
+                          FontAwesomeIcons.pencil,
                           color: isCompleted ? Colors.grey[600] : sandAccent,
+                          size: 18,
                         ),
+                        constraints: const BoxConstraints(),
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 4,
+                          horizontal: 6,
                         ),
                       ),
                       IconButton(
@@ -155,12 +161,14 @@ class TaskTileWidget extends StatelessWidget {
                                 );
                               },
                         splashColor: Colors.red.withOpacity(0.8),
-                        icon: Icon(
-                          Icons.delete_outline_rounded,
+                        icon: FaIcon(
+                          FontAwesomeIcons.trashCan,
                           color: buttonDisable ? Colors.grey[600] : sandAccent,
+                          size: 18,
                         ),
+                        constraints: const BoxConstraints(),
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 4,
+                          horizontal: 6,
                         ),
                       ),
                     ],
