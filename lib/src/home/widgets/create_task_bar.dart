@@ -10,6 +10,7 @@ import 'package:flutter/material.dart'
         TextEditingController,
         TextField,
         Tooltip;
+import 'package:flutter/src/widgets/basic.dart';
 
 import 'package:flutter/widgets.dart'
     show
@@ -99,97 +100,95 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 12,
-        horizontal: 18,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: sandAccent.withOpacity(0.1),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(22.0),
-                ),
-              ),
+    return Consumer<TodoProvider>(builder: (context, todo, child) {
+      String editText = todo.editTodo();
+      if (_controller.text != editText) {
+        // Defer setting text to ensure it doesn't interfere with the build process
+        _controller.text = editText;
+      }
+      return todo.focusMode
+          ? Container()
+          : Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 8,
-                vertical: 3,
+                vertical: 12,
+                horizontal: 18,
               ),
-              child: Consumer<TodoProvider>(
-                builder: (context, todo, child) {
-                  String editText = todo.editTodo();
-                  if (_controller.text != editText) {
-                    // Defer setting text to ensure it doesn't interfere with the build process
-                    _controller.text = editText;
-                  }
-                  return ValueListenableBuilder<String>(
-                    valueListenable: _hoverText,
-                    builder: (context, value, child) {
-                      return Tooltip(
-                        padding: const EdgeInsets.all(12),
-                        message: toolTipMessage(value, editText),
-                        preferBelow: true,
-                        verticalOffset: 30,
-                        textStyle: sfTextTheme.bodyLarge!.copyWith(
-                          color: sandAccent.withOpacity(0.6),
-                          fontWeight: FontWeight.w600,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: sandAccent.withOpacity(0.1),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(22.0),
                         ),
-                        decoration: BoxDecoration(
-                          color: bgDark,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(22.0),
-                          ),
-                          border: Border.all(
-                            color: sandAccent,
-                          ),
-                        ),
-                        child: TextField(
-                          focusNode: focusN,
-                          controller: _controller,
-                          cursorColor: sandAccent,
-                          enableInteractiveSelection: true,
-                          decoration: InputDecoration(
-                            hintText: hintText,
-                            hintStyle: sfTextTheme.bodyLarge!.copyWith(
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
+                      child: ValueListenableBuilder<String>(
+                        valueListenable: _hoverText,
+                        builder: (context, value, child) {
+                          return Tooltip(
+                            padding: const EdgeInsets.all(12),
+                            message: toolTipMessage(value, editText),
+                            preferBelow: true,
+                            verticalOffset: 30,
+                            textStyle: sfTextTheme.bodyLarge!.copyWith(
                               color: sandAccent.withOpacity(0.6),
                               fontWeight: FontWeight.w600,
                             ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 6.0,
-                              horizontal: 14.0,
+                            decoration: BoxDecoration(
+                              color: bgDark,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(22.0),
+                              ),
+                              border: Border.all(
+                                color: sandAccent,
+                              ),
                             ),
-                            border: InputBorder.none,
-                          ),
-                          onSubmitted: (String val) {
-                            if (kIsWeb && val.isNotEmpty) {
-                              var todoProvider = context.read<TodoProvider>();
-                              if (todoProvider.todoIndex == -1) {
-                                todoProvider.addTodo(val, context);
-                              }
-                            }
-                          },
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-          ),
-          const SizedBox(
-            width: 12,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Consumer<TodoProvider>(
-                builder: (context, todo, child) {
-                  return todo.todoIndex != -1
-                      ? Row(
+                            child: TextField(
+                              focusNode: focusN,
+                              controller: _controller,
+                              cursorColor: sandAccent,
+                              enableInteractiveSelection: true,
+                              decoration: InputDecoration(
+                                hintText: hintText,
+                                hintStyle: sfTextTheme.bodyLarge!.copyWith(
+                                  color: sandAccent.withOpacity(0.6),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 6.0,
+                                  horizontal: 14.0,
+                                ),
+                                border: InputBorder.none,
+                              ),
+                              onSubmitted: (String val) {
+                                if (kIsWeb && val.isNotEmpty) {
+                                  var todoProvider =
+                                      context.read<TodoProvider>();
+                                  if (todoProvider.todoIndex == -1) {
+                                    todoProvider.addTodo(val, context);
+                                  }
+                                }
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (todo.todoIndex != -1)
+                        Row(
                           children: [
                             FloatingActionButton(
                               shape: RoundedRectangleBorder(
@@ -213,46 +212,44 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                               width: 6,
                             ),
                           ],
-                        )
-                      : Container();
-                },
+                        ),
+                      FloatingActionButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(28),
+                        ),
+                        onPressed: () {
+                          if (_controller.text.isEmpty) {
+                            if (!focusN.hasFocus) {
+                              setState(() {
+                                focusN.requestFocus();
+                              });
+                            }
+                          } else {
+                            var todoProvider = context.read<TodoProvider>();
+                            if (todoProvider.todoIndex == -1) {
+                              todoProvider.addTodo(_controller.text, context);
+                            } else {
+                              todoProvider.updateTodo(todoProvider.todoIndex,
+                                  _controller.text, context);
+                              todoProvider.todoIndex = -1;
+                            }
+                            focusN.unfocus();
+                            _controller.clear();
+                          }
+                        },
+                        backgroundColor: themeColor,
+                        child: const FaIcon(
+                          FontAwesomeIcons.plus,
+                          color: bgDark,
+                          size: 32,
+                          // todo: find apt size for icons
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              FloatingActionButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28),
-                ),
-                onPressed: () {
-                  if (_controller.text.isEmpty) {
-                    if (!focusN.hasFocus) {
-                      setState(() {
-                        focusN.requestFocus();
-                      });
-                    }
-                  } else {
-                    var todoProvider = context.read<TodoProvider>();
-                    if (todoProvider.todoIndex == -1) {
-                      todoProvider.addTodo(_controller.text, context);
-                    } else {
-                      todoProvider.updateTodo(
-                          todoProvider.todoIndex, _controller.text, context);
-                      todoProvider.todoIndex = -1;
-                    }
-                    focusN.unfocus();
-                    _controller.clear();
-                  }
-                },
-                backgroundColor: themeColor,
-                child: const FaIcon(
-                  FontAwesomeIcons.plus,
-                  color: bgDark,
-                  size: 32,
-                  // todo: find apt size for icons
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+            );
+    });
   }
 }

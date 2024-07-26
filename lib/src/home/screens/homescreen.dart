@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart'
     show ColorScheme, ReorderableListView, Scaffold, Theme;
 import 'package:flutter/widgets.dart'
@@ -8,6 +9,7 @@ import 'package:flutter/widgets.dart'
         Animation,
         BuildContext,
         Column,
+        Container,
         EdgeInsets,
         Expanded,
         FadeTransition,
@@ -23,6 +25,7 @@ import 'package:flutter/widgets.dart'
         StatefulWidget,
         ValueKey,
         Widget;
+import 'package:orangelist/src/home/data/todo_model.dart' show TodoModel;
 
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
@@ -55,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Flexible(
-              flex: 4,
+              flex: kIsWeb ? 4 : 2,
               fit: FlexFit.loose,
               child: SingleChildScrollView(
                 child: Column(
@@ -68,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Expanded(
-              flex: 5,
+              flex: kIsWeb ? 5 : 2,
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
@@ -129,14 +132,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                   : ListView.builder(
                                       key: const ValueKey('ListView'),
                                       shrinkWrap: true,
-                                      itemCount:
-                                          todoprovider.dailyToDolist.length,
+                                      itemCount: todoprovider.focusMode
+                                          ? 1
+                                          : todoprovider.dailyToDolist.length,
                                       itemBuilder: (context, index) {
-                                        return TaskTileWidget(
-                                          taskTitle: todoprovider
-                                              .dailyToDolist[index].title,
-                                          index: index,
-                                        );
+                                        if (todoprovider.focusMode) {
+                                          int incompleteIndex =
+                                              findTheCorrectIndex(
+                                                  todoprovider.dailyToDolist);
+                                          return incompleteIndex == -1
+                                              ? Container()
+                                              : TaskTileWidget(
+                                                  taskTitle: todoprovider
+                                                      .dailyToDolist[
+                                                          incompleteIndex]
+                                                      .title,
+                                                  index: incompleteIndex,
+                                                );
+                                        } else {
+                                          return TaskTileWidget(
+                                            taskTitle: todoprovider
+                                                .dailyToDolist[index].title,
+                                            index: index,
+                                          );
+                                        }
                                       },
                                     ),
                         );
@@ -150,5 +169,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  /// Finds the first index which is still not finished
+  int findTheCorrectIndex(List<TodoModel> todoList) {
+    int index = todoList.indexWhere((element) => !element.isCompleted);
+    return index;
   }
 }

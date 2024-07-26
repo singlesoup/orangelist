@@ -134,37 +134,39 @@ class _LineThroughTextState extends State<LineThroughText>
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      // debugPrint(constraints.maxWidth.toString());
-      if (_maxWidth != constraints.maxWidth) {
-        _maxWidth = constraints.maxWidth;
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _updateTextHeight();
-        });
-      }
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // debugPrint(constraints.maxWidth.toString());
+        if (_maxWidth != constraints.maxWidth) {
+          _maxWidth = constraints.maxWidth;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _updateTextHeight();
+          });
+        }
 
-      return SizedBox(
-        height: _textHeight,
-        width: GlobalMediaQuerySize.screenWidth,
-        child: AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child) {
-            return CustomPaint(
-              painter: StrikeThroughPainter(
-                progress: _animation.value,
-                strikeColor: widget.strikeColor,
-                text: widget.text,
-                textStyle: widget.textStyle.copyWith(
-                  color: widget.isCompleted
-                      ? sandAccent.withOpacity(0.56)
-                      : sandAccent,
+        return SizedBox(
+          height: _textHeight,
+          width: GlobalMediaQuerySize.screenWidth,
+          child: AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
+              return CustomPaint(
+                painter: StrikeThroughPainter(
+                  progress: _animation.value,
+                  strikeColor: widget.strikeColor,
+                  text: widget.text,
+                  textStyle: widget.textStyle.copyWith(
+                    color: widget.isCompleted
+                        ? sandAccent.withOpacity(0.56)
+                        : sandAccent,
+                  ),
+                  strokeThickness: 3,
                 ),
-                strokeThickness: 3,
-              ),
-            );
-          },
-        ),
-      );
-    });
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 }
