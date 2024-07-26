@@ -105,6 +105,7 @@ class TodoProvider extends ChangeNotifier {
 
   set isReorder(bool newBool) {
     _isReorder = newBool;
+    _focusMode = false;
     notifyListeners();
   }
 
@@ -118,6 +119,17 @@ class TodoProvider extends ChangeNotifier {
     _dailyToDolist.insert(newIndex, item);
 
     putTodo(TodoList(todos: _dailyToDolist));
+    notifyListeners();
+  }
+
+  /// For Focus Mode switch
+  bool _focusMode = false;
+
+  bool get focusMode => _focusMode;
+
+  set focusMode(bool newBool) {
+    _focusMode = newBool;
+    _isReorder = false;
     notifyListeners();
   }
 }

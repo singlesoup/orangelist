@@ -71,6 +71,7 @@ class TaskTileWidget extends StatelessWidget {
               ? false
               : todoProvider.dailyToDolist[index].isCompleted;
           bool forReorder = todoProvider.isReorder;
+          bool focusMode = todoProvider.focusMode;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -126,7 +127,7 @@ class TaskTileWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              if (!forReorder)
+              if (!forReorder && !focusMode)
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 4,
