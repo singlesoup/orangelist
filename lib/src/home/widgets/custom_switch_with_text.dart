@@ -5,7 +5,6 @@ import 'package:flutter/material.dart'
         Widget,
         WidgetState,
         WidgetStateProperty;
-import 'package:flutter/src/widgets/basic.dart';
 
 import 'package:flutter/widgets.dart'
     show
