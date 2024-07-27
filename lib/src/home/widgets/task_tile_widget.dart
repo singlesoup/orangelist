@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' show Colors, IconButton;
 import 'package:flutter/widgets.dart'
     show
@@ -127,7 +128,7 @@ class TaskTileWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              if (!forReorder && !focusMode)
+              if (!forReorder && !focusMode && kIsWeb)
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 4,

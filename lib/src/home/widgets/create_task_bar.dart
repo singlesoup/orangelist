@@ -10,7 +10,6 @@ import 'package:flutter/material.dart'
         TextEditingController,
         TextField,
         Tooltip;
-import 'package:flutter/src/widgets/basic.dart';
 
 import 'package:flutter/widgets.dart'
     show
@@ -105,6 +104,7 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
       if (_controller.text != editText) {
         // Defer setting text to ensure it doesn't interfere with the build process
         _controller.text = editText;
+        focusN.requestFocus();
       }
       return todo.focusMode
           ? Container()

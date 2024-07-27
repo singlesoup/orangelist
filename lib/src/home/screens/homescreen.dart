@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart'
     show ColorScheme, ReorderableListView, Scaffold, Theme;
 import 'package:flutter/widgets.dart'
@@ -25,13 +25,15 @@ import 'package:flutter/widgets.dart'
         StatefulWidget,
         ValueKey,
         Widget;
-import 'package:orangelist/src/home/data/todo_model.dart' show TodoModel;
 
+import 'package:orangelist/src/home/data/todo_model.dart' show TodoModel;
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/home/widgets/about_banner.dart' show AboutBanner;
 import 'package:orangelist/src/home/widgets/create_task_bar.dart'
     show CreateTaskBar;
+import 'package:orangelist/src/home/widgets/dismissible_task_tile.dart'
+    show DismissibleTaskTile;
 import 'package:orangelist/src/home/widgets/no_todo.dart' show NoTodos;
 import 'package:orangelist/src/home/widgets/reorder_tile.dart' show ReOrderTile;
 import 'package:orangelist/src/home/widgets/task_tile_widget.dart'
@@ -58,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Flexible(
-              flex: kIsWeb ? 4 : 2,
+              flex: 4,
               fit: FlexFit.loose,
               child: SingleChildScrollView(
                 child: Column(
@@ -71,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Expanded(
-              flex: kIsWeb ? 5 : 2,
+              flex: 5,
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
@@ -150,11 +152,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   index: incompleteIndex,
                                                 );
                                         } else {
-                                          return TaskTileWidget(
-                                            taskTitle: todoprovider
-                                                .dailyToDolist[index].title,
-                                            index: index,
-                                          );
+                                          String taskTitle = todoprovider
+                                              .dailyToDolist[index].title;
+                                          return kIsWeb
+                                              ? TaskTileWidget(
+                                                  taskTitle: taskTitle,
+                                                  index: index,
+                                                )
+                                              : DismissibleTaskTile(
+                                                  title: taskTitle,
+                                                  index: index,
+                                                );
                                         }
                                       },
                                     ),

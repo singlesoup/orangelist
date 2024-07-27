@@ -5,7 +5,7 @@ import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/theme/text_theme.dart' show sfTextTheme;
 
-showAlertBeforDeleting(
+Future showAlertBeforDeleting(
   BuildContext context,
   TodoProvider todo,
   int index,
@@ -24,7 +24,7 @@ showAlertBeforDeleting(
       actions: [
         PlatformDialogAction(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(false);
           },
           child: Text(
             'Cancel',
@@ -33,7 +33,7 @@ showAlertBeforDeleting(
         ),
         PlatformDialogAction(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
             if (context.mounted) {
               todo.deleteTodo(index, context);
             }
