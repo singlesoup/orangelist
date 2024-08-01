@@ -7,6 +7,9 @@ import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 
 import 'package:flutter/widgets.dart'
     show BuildContext, StatelessWidget, WidgetsFlutterBinding;
+import 'package:hive/hive.dart';
+import 'package:orangelist/src/constants/strings.dart' show todoBoxHive;
+import 'package:orangelist/src/home/data/todo_list.dart' show TodoList;
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/home/screens/homescreen.dart' show HomeScreen;
@@ -36,7 +39,7 @@ void main() {
       runApp(const MyApp());
     }
   }, (error, stack) {
-    // Use firebase crashlytics if added
+    // Use crashlytics here
   });
 }
 
@@ -47,30 +50,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalMediaQuerySize globalSize = GlobalMediaQuerySize();
     globalSize.init(context);
+    Box<TodoList> todoBox = Hive.box(todoBoxHive);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => TodoProvider(),
+          create: (_) => TodoProvider(todoBox: todoBox),
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'OrangeList: The Todo App',
         theme: ThemeData(
           textTheme: sfTextTheme,
           brightness: Brightness.dark,
         ),
-        home: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-              create: (_) => TodoProvider(),
-            ),
-          ],
-          child: kIsWeb
-              ? const WebAppOutlineWidget(
-                  child: HomeScreen(),
-                )
-              : const HomeScreen(),
-        ),
+        home: kIsWeb
+            ? const WebAppOutlineWidget(
+                child: HomeScreen(),
+              )
+            : const HomeScreen(),
         debugShowCheckedModeBanner: false,
       ),
     );
