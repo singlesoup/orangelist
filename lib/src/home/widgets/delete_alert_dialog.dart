@@ -39,7 +39,7 @@ Future showAlertBeforDeleting(
             }
           },
           child: Text(
-            'Ok',
+            'Delete',
             style: sfTextTheme.labelLarge,
           ),
         ),

@@ -1,14 +1,15 @@
 import 'dart:async' show runZonedGuarded;
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show Key, kIsWeb;
 import 'package:flutter/material.dart'
     show Brightness, MaterialApp, ThemeData, Widget, runApp;
 import 'package:flutter/services.dart' show DeviceOrientation, SystemChrome;
 
 import 'package:flutter/widgets.dart'
     show BuildContext, StatelessWidget, WidgetsFlutterBinding;
-import 'package:hive/hive.dart';
-import 'package:orangelist/src/constants/strings.dart' show todoBoxHive;
+import 'package:hive/hive.dart' show Box, Hive;
+import 'package:orangelist/src/constants/strings.dart'
+    show homeScreenKey, todoBoxHive;
 import 'package:orangelist/src/home/data/todo_list.dart' show TodoList;
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
@@ -29,14 +30,20 @@ void main() {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await initHive();
+    Box<TodoList> todoBox = Hive.box(todoBoxHive);
+
     if (!kIsWeb) {
       SystemChrome.setPreferredOrientations(
               [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
           .then((_) {
-        runApp(const MyApp());
+        runApp(MyApp(
+          hiveBox: todoBox,
+        ));
       });
     } else {
-      runApp(const MyApp());
+      runApp(MyApp(
+        hiveBox: todoBox,
+      ));
     }
   }, (error, stack) {
     // Use crashlytics here
@@ -44,17 +51,18 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Box<TodoList> hiveBox;
+  const MyApp({super.key, required this.hiveBox});
 
   @override
   Widget build(BuildContext context) {
     GlobalMediaQuerySize globalSize = GlobalMediaQuerySize();
     globalSize.init(context);
-    Box<TodoList> todoBox = Hive.box(todoBoxHive);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => TodoProvider(todoBox: todoBox),
+          create: (_) => TodoProvider(todoBox: hiveBox),
         ),
       ],
       child: MaterialApp(
@@ -65,9 +73,13 @@ class MyApp extends StatelessWidget {
         ),
         home: kIsWeb
             ? const WebAppOutlineWidget(
-                child: HomeScreen(),
+                child: HomeScreen(
+                  key: Key(homeScreenKey),
+                ),
               )
-            : const HomeScreen(),
+            : const HomeScreen(
+                key: Key(homeScreenKey),
+              ),
         debugShowCheckedModeBanner: false,
       ),
     );

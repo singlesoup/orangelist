@@ -17,7 +17,10 @@ class TodoProvider extends ChangeNotifier {
   TodoProvider({required this.todoBox}) {
     getData();
   }
-  static bool isTestMode = Platform.environment.containsKey('FLUTTER_TEST');
+  bool isTestMode = Platform.environment.containsKey('FLUTTER_TEST');
+
+  // Set this to true to test for web env specific code
+  bool toTestForWeb = false;
 
   List<TodoModel> _dailyToDolist = [];
 

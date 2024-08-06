@@ -23,8 +23,9 @@ import 'package:flutter/widgets.dart'
         SingleChildScrollView,
         State,
         StatefulWidget,
-        ValueKey,
         Widget;
+import 'package:orangelist/src/constants/strings.dart'
+    show listViewKey, reorderableListKey;
 
 import 'package:orangelist/src/home/data/todo_model.dart' show TodoModel;
 import 'package:orangelist/src/home/provider/todo_provider.dart'
@@ -106,8 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               : isReordering &&
                                       todoprovider.dailyToDolist.length > 1
                                   ? ReorderableListView(
-                                      key:
-                                          const ValueKey('ReorderableListView'),
+                                      key: const Key(reorderableListKey),
                                       shrinkWrap: true,
                                       onReorder: (int oldIndex, int newIndex) {
                                         todoprovider.onReorder(
@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ],
                                     )
                                   : ListView.builder(
-                                      key: const ValueKey('ListView'),
+                                      key: const Key(listViewKey),
                                       shrinkWrap: true,
                                       itemCount: todoprovider.focusMode
                                           ? 1
@@ -154,7 +154,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                         } else {
                                           String taskTitle = todoprovider
                                               .dailyToDolist[index].title;
-                                          return kIsWeb
+                                          return (kIsWeb ||
+                                                  todoprovider.toTestForWeb)
                                               ? TaskTileWidget(
                                                   taskTitle: taskTitle,
                                                   index: index,

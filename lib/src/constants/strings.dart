@@ -25,4 +25,11 @@ const String obFuture =
     "Sometimes we just want to enter task in any order just to get them out of our mind. And that's how it should be. Well want to set priority to them — just drag";
 
 // Keys For testing
+const String homeScreenKey = "Homescreen";
+const String reorderableListKey = "ReorderableListView";
+const String listViewKey = "ListView";
 const String plusTodoKey = "add todo";
+const String dismissibleTileKey = "dismissible:";
+const String editKey = 'editTodoIcon';
+const String deleteKey = 'deleteTodoIcon';
+const String statusUpdateTodoKey = 'statusUpdateTodo';

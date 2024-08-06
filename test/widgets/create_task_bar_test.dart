@@ -73,6 +73,7 @@ void main() {
     // Simulate pressing the add button
     await tester.tap(find.byKey(const Key(plusTodoKey)));
 
+    // Set state in testing env
     await tester.pump();
 
     //verify
