@@ -1,4 +1,4 @@
-package com.example.soulfyre
+package com.example.orangelist
 
 import io.flutter.embedding.android.FlutterActivity
 
