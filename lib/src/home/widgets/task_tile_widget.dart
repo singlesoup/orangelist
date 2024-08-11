@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show Key, debugPrint, kIsWeb;
 import 'package:flutter/material.dart' show Colors, IconButton;
 import 'package:flutter/widgets.dart'
     show
@@ -24,6 +24,7 @@ import 'package:flutter/widgets.dart'
         Widget;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FaIcon, FontAwesomeIcons;
+import 'package:orangelist/src/constants/strings.dart';
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/home/widgets/delete_alert_dialog.dart'
@@ -47,6 +48,7 @@ class TaskTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: Key('$taskTitle-$index'),
       decoration: BoxDecoration(
         color: sandAccent.withOpacity(0.08),
         borderRadius: const BorderRadius.all(
@@ -81,8 +83,10 @@ class TaskTileWidget extends StatelessWidget {
                   children: [
                     if (!buttonDisable && !forReorder)
                       GestureDetector(
+                        key: const Key(statusUpdateTodoKey),
                         onTap: () {
                           isCompleted = !isCompleted;
+                          debugPrint('isCompleted:$isCompleted');
                           todoProvider.updateTodoStatus(
                             index,
                             isCompleted,
@@ -128,7 +132,10 @@ class TaskTileWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              if (!forReorder && !focusMode && kIsWeb)
+              // Todo: Add a dependency to by pass [kIsWeb] in testMode
+              if (!forReorder &&
+                  !focusMode &&
+                  (kIsWeb || todoProvider.isTestMode))
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 4,
@@ -137,6 +144,7 @@ class TaskTileWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
+                        key: const Key(editKey),
                         onPressed: isCompleted
                             ? null
                             : () {
@@ -153,6 +161,7 @@ class TaskTileWidget extends StatelessWidget {
                         ),
                       ),
                       IconButton(
+                        key: const Key(deleteKey),
                         onPressed: buttonDisable
                             ? null
                             : () {

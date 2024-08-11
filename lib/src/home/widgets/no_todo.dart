@@ -34,8 +34,9 @@ class NoTodos extends StatelessWidget {
   Widget build(BuildContext context) {
     final random = Random();
     final randomSvgIndex = random.nextInt(8) + 1;
+    final height = (GlobalMediaQuerySize.screenHeight ?? 0.0) * 0.44;
     return Container(
-      height: GlobalMediaQuerySize.screenHeight! * 0.44,
+      height: height,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
           Radius.circular(22.0),

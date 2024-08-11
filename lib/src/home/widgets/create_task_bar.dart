@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show Key, kIsWeb;
 import 'package:flutter/material.dart'
     show
         FloatingActionButton,
@@ -35,7 +35,8 @@ import 'package:flutter/widgets.dart'
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FaIcon, FontAwesomeIcons;
-import 'package:orangelist/src/constants/strings.dart' show hintText;
+import 'package:orangelist/src/constants/strings.dart'
+    show hintText, plusTodoKey;
 
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
@@ -214,6 +215,7 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                           ],
                         ),
                       FloatingActionButton(
+                        key: const Key(plusTodoKey),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(28),
                         ),
