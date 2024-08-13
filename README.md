@@ -1,3 +1,5 @@
+![Orangelist](assets/logo/app_icon.svg) 
+
 # Orangelist - The Todo App
 
 ## Description
