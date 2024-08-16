@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart'
     show ColorScheme, ReorderableListView, Scaffold, Theme;
 import 'package:flutter/widgets.dart'
