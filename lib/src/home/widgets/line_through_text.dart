@@ -8,7 +8,7 @@ import 'package:flutter/widgets.dart'
         Curve,
         CurvedAnimation,
         CustomPaint,
-        MediaQuery,
+        LayoutBuilder,
         SingleTickerProviderStateMixin,
         SizedBox,
         State,
@@ -22,6 +22,8 @@ import 'package:flutter/widgets.dart'
 import 'package:orangelist/src/home/widgets/painter/strike_through_painter.dart'
     show StrikeThroughPainter;
 import 'package:orangelist/src/theme/colors.dart' show sandAccent;
+import 'package:orangelist/src/utils/global_size.dart'
+    show GlobalMediaQuerySize;
 
 class LineThroughText extends StatefulWidget {
   const LineThroughText({
@@ -51,6 +53,7 @@ class _LineThroughTextState extends State<LineThroughText>
   late Animation<double> _animation;
   late TextPainter _textPainter;
   double _textHeight = 0.0;
+  double _maxWidth = 0.0;
 
   @override
   void initState() {
@@ -98,15 +101,19 @@ class _LineThroughTextState extends State<LineThroughText>
         maxLines: null,
       );
     }
-    _textPainter.layout(maxWidth: MediaQuery.of(context).size.width);
+    final globalWidth = GlobalMediaQuerySize.screenWidth ?? 0;
+    _textPainter.layout(maxWidth: globalWidth);
     setState(() {
-      _textHeight = _textPainter.height * 2.8;
+      _textHeight = globalWidth > 1300
+          ? _textPainter.height * 4.8
+          : _textPainter.height * 2.8;
     });
   }
 
   @override
   void didUpdateWidget(covariant LineThroughText oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     if (widget.isCompleted != oldWidget.isCompleted) {
       if (widget.isCompleted) {
         _controller.forward();
@@ -128,26 +135,39 @@ class _LineThroughTextState extends State<LineThroughText>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: _textHeight,
-      child: AnimatedBuilder(
-        animation: _animation,
-        builder: (context, child) {
-          return CustomPaint(
-            painter: StrikeThroughPainter(
-              progress: _animation.value,
-              strikeColor: widget.strikeColor,
-              text: widget.text,
-              textStyle: widget.textStyle.copyWith(
-                color: widget.isCompleted
-                    ? sandAccent.withOpacity(0.56)
-                    : sandAccent,
-              ),
-              strokeThickness: 3,
-            ),
-          );
-        },
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // debugPrint(constraints.maxWidth.toString());
+        if (_maxWidth != constraints.maxWidth) {
+          _maxWidth = constraints.maxWidth;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _updateTextHeight();
+          });
+        }
+
+        return SizedBox(
+          height: _textHeight,
+          width: GlobalMediaQuerySize.screenWidth,
+          child: AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
+              return CustomPaint(
+                painter: StrikeThroughPainter(
+                  progress: _animation.value,
+                  strikeColor: widget.strikeColor,
+                  text: widget.text,
+                  textStyle: widget.textStyle.copyWith(
+                    color: widget.isCompleted
+                        ? sandAccent.withOpacity(0.56)
+                        : sandAccent,
+                  ),
+                  strokeThickness: 3,
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

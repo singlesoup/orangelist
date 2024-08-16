@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart' show Colors, IconButton, Icons;
+import 'package:flutter/foundation.dart' show Key, debugPrint, kIsWeb;
+import 'package:flutter/material.dart' show Colors, IconButton;
 import 'package:flutter/widgets.dart'
     show
         Border,
         BorderRadius,
+        BoxConstraints,
         BoxDecoration,
         BoxShape,
         BuildContext,
@@ -13,7 +15,6 @@ import 'package:flutter/widgets.dart'
         Expanded,
         FontWeight,
         GestureDetector,
-        Icon,
         MainAxisAlignment,
         Radius,
         Row,
@@ -21,6 +22,9 @@ import 'package:flutter/widgets.dart'
         SizedBox,
         StatelessWidget,
         Widget;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart'
+    show FaIcon, FontAwesomeIcons;
+import 'package:orangelist/src/constants/strings.dart';
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/home/widgets/delete_alert_dialog.dart'
@@ -44,6 +48,7 @@ class TaskTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: Key('$taskTitle-$index'),
       decoration: BoxDecoration(
         color: sandAccent.withOpacity(0.08),
         borderRadius: const BorderRadius.all(
@@ -65,8 +70,11 @@ class TaskTileWidget extends StatelessWidget {
       child: Consumer<TodoProvider>(
         builder: (context, todoProvider, child) {
           bool buttonDisable = todoProvider.todoIndex != -1;
-          bool isCompleted = todoProvider.dailyToDolist[index].isCompleted;
+          bool isCompleted = todoProvider.dailyToDolist.isEmpty
+              ? false
+              : todoProvider.dailyToDolist[index].isCompleted;
           bool forReorder = todoProvider.isReorder;
+          bool focusMode = todoProvider.focusMode;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -75,9 +83,15 @@ class TaskTileWidget extends StatelessWidget {
                   children: [
                     if (!buttonDisable && !forReorder)
                       GestureDetector(
+                        key: const Key(statusUpdateTodoKey),
                         onTap: () {
                           isCompleted = !isCompleted;
-                          todoProvider.updateTodoStatus(index, isCompleted);
+                          debugPrint('isCompleted:$isCompleted');
+                          todoProvider.updateTodoStatus(
+                            index,
+                            isCompleted,
+                            context,
+                          );
                         },
                         child: Container(
                           height: 26,
@@ -118,7 +132,10 @@ class TaskTileWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              if (!forReorder)
+              // Todo: Add a dependency to by pass [kIsWeb] in testMode
+              if (!forReorder &&
+                  !focusMode &&
+                  (kIsWeb || todoProvider.isTestMode))
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 4,
@@ -127,20 +144,24 @@ class TaskTileWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
+                        key: const Key(editKey),
                         onPressed: isCompleted
                             ? null
                             : () {
                                 todoProvider.todoIndex = index;
                               },
-                        icon: Icon(
-                          Icons.mode_edit_outline_outlined,
+                        icon: FaIcon(
+                          FontAwesomeIcons.pencil,
                           color: isCompleted ? Colors.grey[600] : sandAccent,
+                          size: 18,
                         ),
+                        constraints: const BoxConstraints(),
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 4,
+                          horizontal: 6,
                         ),
                       ),
                       IconButton(
+                        key: const Key(deleteKey),
                         onPressed: buttonDisable
                             ? null
                             : () {
@@ -151,12 +172,14 @@ class TaskTileWidget extends StatelessWidget {
                                 );
                               },
                         splashColor: Colors.red.withOpacity(0.8),
-                        icon: Icon(
-                          Icons.delete_outline_rounded,
+                        icon: FaIcon(
+                          FontAwesomeIcons.trashCan,
                           color: buttonDisable ? Colors.grey[600] : sandAccent,
+                          size: 18,
                         ),
+                        constraints: const BoxConstraints(),
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 4,
+                          horizontal: 6,
                         ),
                       ),
                     ],

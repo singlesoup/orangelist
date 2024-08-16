@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!DOCTYPE html><html><head>
   <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
@@ -23,13 +21,13 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="soulfyre">
+  <meta name="apple-mobile-web-app-title" content="orangelist">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png">
 
-  <title>soulfyre</title>
+  <title>Orangelist</title>
   <link rel="manifest" href="manifest.json">
 
   <script>
@@ -37,9 +35,62 @@
     const serviceWorkerVersion = {flutter_service_worker_version};
   </script>
   <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
+  <script src="flutter.js" defer=""></script>
+  <style id="splash-screen-style">
+    html, body {
+      height: 100%;
+      margin: 0;
+      background-color: #0d0d0d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-left-color: #f55e3a;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+  
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #0d0d0d;
+      }
+      .spinner {
+        border-left-color: #f55e3a;
+      }
+    }
+  
+    @media (prefers-color-scheme: light) {
+      body {
+        background-color: #f55e3a;
+      }
+      .spinner {
+        border-left-color: #000000;
+      }
+    }
+  </style>
+
+  <script id="splash-screen-script">
+    function removeSplashFromWeb() {
+      document.getElementById("splash")?.remove();
+      document.getElementById("splash-branding")?.remove();
+      document.body.style.background = "transparent";
+    }
+  </script>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
-</body>
-</html>
+  <div id="loading-indicator" class="center">
+    <div class="spinner"></div>
+  </div>
+  <script src="flutter_bootstrap.js" async=""></script>
+</body></html>
