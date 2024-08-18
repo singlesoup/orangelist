@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:feedback/feedback.dart' show BetterFeedback;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart' show AppBar, IconButton, Scaffold;
 import 'package:flutter/widgets.dart'
     show
@@ -12,11 +13,13 @@ import 'package:flutter/widgets.dart'
         Widget;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FaIcon, FontAwesomeIcons;
+import 'package:orangelist/src/home/screens/settingsPage/constants/submit_feedback.dart'
+    show submitFeedback;
 import 'package:orangelist/src/home/screens/settingsPage/widgets/settings_tile.dart'
     show SettingsTile;
 import 'package:orangelist/src/theme/colors.dart' show bgDark, sandAccent;
 import 'package:orangelist/src/theme/text_theme.dart' show sfTextTheme;
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart' show launchUrl;
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -48,7 +51,7 @@ class SettingsPage extends StatelessWidget {
             SettingsTile(
               title: "Facing any issue? or Any Feedback?",
               icon: FontAwesomeIcons.comment,
-              onTap: () {},
+              onTap: () => sendFeedback(context),
             ),
             SettingsTile(
               icon: FontAwesomeIcons.xTwitter,
@@ -66,6 +69,8 @@ class SettingsPage extends StatelessWidget {
                 _lauchurl(uri);
               },
             ),
+
+            /// TODO: Firebase Remote config
             if (!kIsWeb)
               SettingsTile(
                 icon: FontAwesomeIcons.star,
@@ -82,5 +87,17 @@ class SettingsPage extends StatelessWidget {
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }
+  }
+
+  sendFeedback(BuildContext context) {
+    BetterFeedback.of(context).show((feedback) {
+      submitFeedback(
+        context: context,
+        title: kIsWeb ? "User Feedback web" : "User Feedback app",
+        body: feedback.text,
+        isWeb: kIsWeb,
+        image: feedback.screenshot,
+      );
+    });
   }
 }

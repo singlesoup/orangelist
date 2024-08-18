@@ -1,5 +1,6 @@
 import 'dart:async' show runZonedGuarded;
 
+import 'package:feedback/feedback.dart' show BetterFeedback, FeedbackThemeData;
 import 'package:flutter/foundation.dart' show Key, kIsWeb;
 import 'package:flutter/material.dart'
     show Brightness, MaterialApp, ThemeData, Widget, runApp;
@@ -16,6 +17,7 @@ import 'package:orangelist/src/home/provider/todo_provider.dart'
 import 'package:orangelist/src/home/screens/homescreen.dart' show HomeScreen;
 import 'package:orangelist/src/home/widgets/web_app_outline_widget.dart'
     show WebAppOutlineWidget;
+import 'package:orangelist/src/theme/colors.dart';
 import 'package:orangelist/src/utils/global_size.dart'
     show GlobalMediaQuerySize;
 
@@ -25,29 +27,50 @@ import 'package:provider/provider.dart'
 
 // import 'src/onboarding/screens/on_boarding_screen.dart';
 import 'src/theme/text_theme.dart' show sfTextTheme;
+import 'package:flutter_dotenv/flutter_dotenv.dart' show dotenv;
 
 void main() {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await initHive();
     Box<TodoList> todoBox = Hive.box(todoBoxHive);
+    await dotenv.load(fileName: ".env");
 
     if (!kIsWeb) {
       SystemChrome.setPreferredOrientations(
-              [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-          .then((_) {
-        runApp(MyApp(
-          hiveBox: todoBox,
-        ));
-      });
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
+        (_) {
+          runApp(
+            BetterFeedback(
+              theme: feedBackTheme(),
+              child: MyApp(
+                hiveBox: todoBox,
+              ),
+            ),
+          );
+        },
+      );
     } else {
-      runApp(MyApp(
-        hiveBox: todoBox,
+      runApp(BetterFeedback(
+        theme: feedBackTheme(),
+        child: MyApp(
+          hiveBox: todoBox,
+        ),
       ));
     }
   }, (error, stack) {
     // Use crashlytics here
   });
+}
+
+FeedbackThemeData feedBackTheme() {
+  return FeedbackThemeData(
+    background: sandAccent,
+    activeFeedbackModeColor: themeColor,
+    feedbackSheetColor: bgDark,
+    bottomSheetDescriptionStyle: sfTextTheme.titleLarge!,
+    bottomSheetTextInputStyle: sfTextTheme.bodyMedium!,
+  );
 }
 
 class MyApp extends StatelessWidget {
