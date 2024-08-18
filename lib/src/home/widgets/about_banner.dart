@@ -19,7 +19,7 @@ import 'package:flutter/widgets.dart'
         Widget;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FaIcon, FontAwesomeIcons;
-import 'package:orangelist/src/home/screens/settingsPage/screens/settings.dart'
+import 'package:orangelist/src/home/screens/settingsPage/screens/settings_page.dart'
     show SettingsPage;
 import 'package:orangelist/src/home/widgets/web_app_outline_widget.dart'
     show WebAppOutlineWidget;

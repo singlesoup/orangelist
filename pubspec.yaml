@@ -9,7 +9,7 @@ version: 1.0.0+1
 #   uses: alexleventer/github-issue-due-dates-action@1.1.0
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
+  sdk: ">=3.4.0 <4.0.0"
 
 dependencies:
   another_flushbar: ^1.12.30
@@ -17,12 +17,15 @@ dependencies:
   feedback: ^3.1.0
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.1.0
   flutter_platform_widgets: ^7.0.0
   flutter_svg: ^2.0.9
   font_awesome_flutter: ^10.7.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.1
+  http: ^1.2.2
+  path_provider: ^2.1.4
   provider: ^6.1.2
   shared_preferences: ^2.0.17
   universal_io: ^2.2.2
@@ -66,6 +69,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - .env
     - assets/images/happy.svg
     - assets/images/monthlyOverview.svg
     - assets/images/dragAndOrder.svg
