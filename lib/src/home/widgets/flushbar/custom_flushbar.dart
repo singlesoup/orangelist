@@ -8,6 +8,7 @@ import 'package:orangelist/src/theme/colors.dart'
     show bgDark, sandAccent, themeColor;
 import 'package:orangelist/src/utils/global_size.dart';
 
+/// TODO: Implement Failure UI flow
 void showCustomFlushBar(BuildContext context, String message) {
   Flushbar(
     message: message,
