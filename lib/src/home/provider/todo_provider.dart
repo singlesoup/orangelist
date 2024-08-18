@@ -9,7 +9,7 @@ import 'package:orangelist/src/home/widgets/flushbar/custom_flushbar.dart'
     show showCustomFlushBar;
 import 'package:orangelist/src/utils/hive_service.dart'
     show putTodo, updateHiveTodo;
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' show Platform;
 
 class TodoProvider extends ChangeNotifier {
   // Dependency Injection
@@ -59,7 +59,7 @@ class TodoProvider extends ChangeNotifier {
     ));
     await putTodo(TodoList(todos: _dailyToDolist), todoBox);
     if (context.mounted && !isTestMode) {
-      showCustomFlushBar(context, todoAddedTxt);
+      showCustomFlushBar(context, todoAddedTxt, false);
     }
     notifyListeners();
   }
@@ -77,7 +77,7 @@ class TodoProvider extends ChangeNotifier {
     updateCompletedCount();
     await putTodo(TodoList(todos: _dailyToDolist), todoBox);
     if (context.mounted && !isTestMode) {
-      showCustomFlushBar(context, todoDeletedTxt);
+      showCustomFlushBar(context, todoDeletedTxt, false);
     }
     notifyListeners();
   }
@@ -98,7 +98,7 @@ class TodoProvider extends ChangeNotifier {
       box: todoBox,
     );
     if (context.mounted && !isTestMode) {
-      showCustomFlushBar(context, todoUpdatedTxt);
+      showCustomFlushBar(context, todoUpdatedTxt, false);
     }
     notifyListeners();
   }
@@ -118,7 +118,7 @@ class TodoProvider extends ChangeNotifier {
       box: todoBox,
     );
     if (context.mounted && !isTestMode) {
-      showCustomFlushBar(context, todoUpdatedTxt);
+      showCustomFlushBar(context, todoUpdatedTxt, false);
     }
     notifyListeners();
   }

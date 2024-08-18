@@ -16,7 +16,7 @@ import 'package:flutter/widgets.dart'
         Widget;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FaIcon, FontAwesomeIcons;
-import 'package:orangelist/src/constants/strings.dart';
+import 'package:orangelist/src/constants/strings.dart' show dismissibleTileKey;
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/home/widgets/delete_alert_dialog.dart'
@@ -63,10 +63,7 @@ class DismissibleTaskTile extends StatelessWidget {
         }
         if (buttonDisable) {
           String msg = "You are editing a task. Can't delete.";
-          showCustomFlushBar(
-            context,
-            msg,
-          );
+          showCustomFlushBar(context, msg, false);
         }
         return false;
       },
