@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart' show IconButton, MaterialPageRoute;
 import 'package:flutter/widgets.dart'
     show

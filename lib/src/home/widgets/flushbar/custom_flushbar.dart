@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart' show Colors;
 import 'package:flutter/widgets.dart'
     show BorderRadius, BuildContext, Center, EdgeInsets, Padding;
 import 'package:another_flushbar/flushbar.dart' show Flushbar, FlushbarPosition;
@@ -8,13 +9,12 @@ import 'package:orangelist/src/theme/colors.dart'
     show bgDark, sandAccent, themeColor;
 import 'package:orangelist/src/utils/global_size.dart';
 
-/// TODO: Implement Failure UI flow
-void showCustomFlushBar(BuildContext context, String message) {
+void showCustomFlushBar(BuildContext context, String message, bool isFailure) {
   Flushbar(
     message: message,
     titleColor: sandAccent,
     messageColor: sandAccent,
-    backgroundColor: bgDark,
+    backgroundColor: isFailure ? Colors.red.withOpacity(0.4) : bgDark,
     margin: kIsWeb
         ? EdgeInsets.symmetric(
             horizontal:
@@ -26,20 +26,22 @@ void showCustomFlushBar(BuildContext context, String message) {
     flushbarPosition: FlushbarPosition.BOTTOM,
     duration: const Duration(milliseconds: 1200),
     borderColor: sandAccent,
-    icon: const Center(
+    icon: Center(
       child: Padding(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: 18,
           right: 12,
         ),
         child: FaIcon(
-          FontAwesomeIcons.checkDouble,
+          isFailure
+              ? FontAwesomeIcons.circleXmark
+              : FontAwesomeIcons.checkDouble,
           color: sandAccent,
           size: 22,
         ),
       ),
     ),
-    leftBarIndicatorColor: themeColor,
+    leftBarIndicatorColor: isFailure ? sandAccent : themeColor,
   ).show(context);
 }
 

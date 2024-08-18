@@ -49,14 +49,14 @@ Future<void> submitFeedback({
     // Issue created successfully
     const String msg = 'Feedback submitted successfully!';
     if (context.mounted) {
-      showCustomFlushBar(context, msg);
+      showCustomFlushBar(context, msg, false);
     }
   } else {
     // Handle error
     debugPrint('Failed to submit feedback: ${response.body}');
     const String msg = 'Failed to submit feedback!';
     if (context.mounted) {
-      showCustomFlushBar(context, msg);
+      showCustomFlushBar(context, msg, true);
     }
   }
 }
@@ -83,7 +83,7 @@ Future<String> uploadImageToImgur(Uint8List image, BuildContext context) async {
   } else {
     String msg = 'Failed to upload image';
     if (context.mounted) {
-      showCustomFlushBar(context, msg);
+      showCustomFlushBar(context, msg, true);
     }
     // throw Exception('msg: ${response.body}');
     ///[NOTE] : Here suppose the total limit given by imgur is hit
