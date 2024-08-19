@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:hive/hive.dart';
 
 import 'package:flutter/widgets.dart' show BuildContext, ChangeNotifier;
@@ -40,7 +41,8 @@ class TodoProvider extends ChangeNotifier {
 
   /// Gives to-dos from hive
   void getData() {
-    TodoList? hiveList = todoBox.get(todoBoxHive);
+    TodoList? hiveList =
+        kIsWeb ? todoBox.get(todoBoxHive) : todoBox.values.first;
     _dailyToDolist = hiveList?.todos ?? [];
     updateCompletedCount();
   }
