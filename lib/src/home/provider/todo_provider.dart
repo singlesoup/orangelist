@@ -15,7 +15,10 @@ import 'package:universal_io/io.dart' show Platform;
 class TodoProvider extends ChangeNotifier {
   // Dependency Injection
   final Box<TodoList> todoBox;
-  // Set this to true to test for web env specific code
+
+  /// [Note] : Set this to true to test for web env specific code.
+  ///
+  /// Since we have different widgets for task tiles for web and mobile we need this boolean
   final bool toTestForWeb;
   TodoProvider({required this.todoBox, this.toTestForWeb = false}) {
     getData();
