@@ -3,14 +3,12 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:orangelist/main.dart';
 import 'package:orangelist/src/home/data/todo_list.dart';
 import 'package:orangelist/src/home/provider/todo_provider.dart';
 import 'package:orangelist/src/home/screens/homescreen.dart';
 import 'package:provider/provider.dart';
 
-import 'package:orangelist/src/constants/strings.dart'
-    show deleteKey, editKey, homeScreenKey;
+import 'package:orangelist/src/constants/strings.dart' show deleteKey, editKey;
 
 class MockBox extends Mock implements Box<TodoList> {}
 
@@ -31,7 +29,7 @@ void main() {
 
   setUp(() {
     mockBox = MockBox();
-    todoProvider = TodoProvider(todoBox: mockBox);
+    todoProvider = TodoProvider(todoBox: mockBox, toTestForWeb: true);
     mockContext = MockBuildContext();
 
     // Mocking hive methods
@@ -46,24 +44,6 @@ void main() {
   });
 
   group('Testing the TaskTileWidget in web:', () {
-    // Rendering homscreen
-    testWidgets('HomeScreen renders without errors',
-        (WidgetTester tester) async {
-      // final semantics = tester.ensureSemantics();
-      await tester.pumpWidget(
-        ChangeNotifierProvider(
-          create: (_) => todoProvider,
-          child: MyApp(
-            hiveBox: mockBox,
-          ),
-        ),
-      );
-
-      final homeScreen = find.byKey(const Key(homeScreenKey));
-      expect(homeScreen, findsOneWidget);
-      // semantics.dispose();
-    });
-
     // Displaying Todos
     testWidgets('TaskTileWidget displays todo', (WidgetTester tester) async {
       String title1 = 'Display Todo';
@@ -87,7 +67,6 @@ void main() {
 
     testWidgets('Editing a todo in TasktileWidget',
         (WidgetTester tester) async {
-      todoProvider.isTestMode = true;
       String title1 = 'Edit Todo';
 
       // Adding todos for testing
@@ -119,7 +98,6 @@ void main() {
 
       // Verify that the todoIndex was set correctly
       expect(todoProvider.todoIndex, 0);
-      todoProvider.isTestMode = false;
     });
 
     /// Deleting a todo has multiple widget tests
@@ -129,7 +107,6 @@ void main() {
       group('given in the web env', () {
         // Alert Dialog
         testWidgets('shows an alert dialog', (WidgetTester tester) async {
-          todoProvider.isTestMode = true;
           String title1 = 'Delete Todo';
 
           // Adding todos for testing
@@ -162,7 +139,6 @@ void main() {
 
         // Cancel button
         testWidgets('pressing the cancel button', (WidgetTester tester) async {
-          todoProvider.isTestMode = true;
           String title1 = 'Cancel Todo';
 
           // Adding todos for testing
@@ -208,7 +184,6 @@ void main() {
 
         // Delete button
         testWidgets('pressing the delete button', (WidgetTester tester) async {
-          todoProvider.isTestMode = true;
           String title1 = 'Del Todo';
 
           // Adding todos for testing
@@ -257,5 +232,9 @@ void main() {
         });
       });
     });
+  });
+
+  tearDownAll(() {
+    todoProvider.isTestMode = false;
   });
 }

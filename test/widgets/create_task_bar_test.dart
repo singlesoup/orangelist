@@ -82,4 +82,8 @@ void main() {
 
     semantics.dispose();
   });
+
+  tearDownAll(() {
+    todoProvider.isTestMode = false;
+  });
 }
