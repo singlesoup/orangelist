@@ -149,5 +149,7 @@ void main() {
     });
   });
 
-  // tearDown(() {});
+  tearDownAll(() {
+    todoProvider.isTestMode = false;
+  });
 }

@@ -15,13 +15,14 @@ import 'package:universal_io/io.dart' show Platform;
 class TodoProvider extends ChangeNotifier {
   // Dependency Injection
   final Box<TodoList> todoBox;
-  TodoProvider({required this.todoBox}) {
+  // Set this to true to test for web env specific code
+  final bool toTestForWeb;
+  TodoProvider({required this.todoBox, this.toTestForWeb = false}) {
     getData();
   }
-  bool isTestMode = Platform.environment.containsKey('FLUTTER_TEST');
 
-  // Set this to true to test for web env specific code
-  bool toTestForWeb = false;
+  /// Tells if the code is running in Test mode
+  bool isTestMode = Platform.environment.containsKey('FLUTTER_TEST');
 
   List<TodoModel> _dailyToDolist = [];
 
@@ -41,8 +42,9 @@ class TodoProvider extends ChangeNotifier {
 
   /// Gives to-dos from hive
   void getData() {
-    TodoList? hiveList =
-        kIsWeb ? todoBox.get(todoBoxHive) : todoBox.values.first;
+    TodoList? hiveList = (kIsWeb || toTestForWeb || isTestMode)
+        ? todoBox.get(todoBoxHive)
+        : todoBox.values.first;
     _dailyToDolist = hiveList?.todos ?? [];
     updateCompletedCount();
   }

@@ -235,4 +235,8 @@ void main() {
       });
     });
   });
+
+  tearDownAll(() {
+    todoProvider.isTestMode = false;
+  });
 }
