@@ -47,7 +47,9 @@ class TodoProvider extends ChangeNotifier {
   void getData() {
     TodoList? hiveList = (kIsWeb || toTestForWeb || isTestMode)
         ? todoBox.get(todoBoxHive)
-        : todoBox.values.first;
+        : todoBox.values.isEmpty
+            ? null
+            : todoBox.values.first;
     _dailyToDolist = hiveList?.todos ?? [];
     updateCompletedCount();
   }
