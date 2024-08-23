@@ -8,13 +8,11 @@ jobs:
   flutter_test:
     name: Run flutter test and analyze
     runs-on: ubuntu-latest
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v2
         with:
           java-version: "12.x"
-          distribution: 'adopt'
           distribution: 'adopt'
 
       # Set up Flutter and run test
