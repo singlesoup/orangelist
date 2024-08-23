@@ -31,7 +31,17 @@ jobs:
     needs: [flutter_test]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: anothrNick/github-tag-action@v1
+      - name: Check for existing tag
+        run: |
+          if git rev-parse v0.0.0 >/dev/null 2>&1; then
+            echo "Tag v0.0.0 exists"
+          else
+            echo "Tag v0.0.0 does not exist, creating it now"
+            git tag v0.0.0
+            git push origin v0.0.0
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
           DEFAULT_BUMP: patch # patch means: from `v1.0.0` to `v1.0.1`. 
