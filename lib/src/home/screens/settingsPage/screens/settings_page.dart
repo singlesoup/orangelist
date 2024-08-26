@@ -71,12 +71,12 @@ class SettingsPage extends StatelessWidget {
             ),
 
             /// TODO: Firebase Remote config
-            if (!kIsWeb)
-              SettingsTile(
-                icon: FontAwesomeIcons.star,
-                title: "Rate the App",
-                onTap: () {},
-              ),
+            // if (!kIsWeb)
+            //   SettingsTile(
+            //     icon: FontAwesomeIcons.star,
+            //     title: "Rate the App",
+            //     onTap: () {},
+            //   ),
           ],
         ),
       ),
