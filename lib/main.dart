@@ -15,6 +15,8 @@ import 'package:orangelist/src/home/data/todo_list.dart' show TodoList;
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/home/screens/homescreen.dart' show HomeScreen;
+import 'package:orangelist/src/home/screens/homescreen_web.dart'
+    show HomeScreenWeb;
 import 'package:orangelist/src/home/widgets/web_app_outline_widget.dart'
     show WebAppOutlineWidget;
 import 'package:orangelist/src/theme/colors.dart'
@@ -97,7 +99,7 @@ class MyApp extends StatelessWidget {
         ),
         home: kIsWeb
             ? const WebAppOutlineWidget(
-                child: HomeScreen(
+                child: HomeScreenWeb(
                   key: Key(homeScreenKey),
                 ),
               )
