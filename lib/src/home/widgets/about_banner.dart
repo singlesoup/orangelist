@@ -8,8 +8,11 @@ import 'package:flutter/widgets.dart'
         BoxDecoration,
         BuildContext,
         Container,
+        CrossAxisAlignment,
         EdgeInsets,
+        FlexFit,
         Flexible,
+        MainAxisAlignment,
         Navigator,
         Radius,
         Row,
@@ -31,51 +34,57 @@ class AboutBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: sandAccent.withOpacity(0.1),
-        borderRadius: const BorderRadius.all(
-          Radius.circular(22.0),
-        ),
-      ),
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 3,
-      ),
-      margin: const EdgeInsets.only(
-        left: 14,
-        right: 14,
-        top: 12,
-      ),
-      child: Row(
-        children: [
-          const Spacer(),
-          Text(
-            'Orangelist',
-            style: sfTextTheme.titleLarge,
+    return Flexible(
+      fit: FlexFit.loose,
+      child: Container(
+        decoration: BoxDecoration(
+          color: sandAccent.withOpacity(0.1),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(22.0),
           ),
-          Flexible(
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => kIsWeb
-                          ? const WebAppOutlineWidget(child: SettingsPage())
-                          : const SettingsPage(),
-                    ),
-                  );
-                },
-                icon: const FaIcon(
-                  FontAwesomeIcons.gear,
-                  color: sandAccent,
+        ),
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 2,
+        ),
+        margin: const EdgeInsets.only(
+          left: 14,
+          right: 14,
+          top: 6,
+          bottom: 4,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Spacer(),
+            Text(
+              'Orangelist',
+              style: sfTextTheme.titleLarge,
+            ),
+            Flexible(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => kIsWeb
+                            ? const WebAppOutlineWidget(child: SettingsPage())
+                            : const SettingsPage(),
+                      ),
+                    );
+                  },
+                  icon: const FaIcon(
+                    FontAwesomeIcons.gear,
+                    color: sandAccent,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

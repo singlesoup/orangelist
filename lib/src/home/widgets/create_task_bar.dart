@@ -111,7 +111,7 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
           ? Container()
           : Padding(
               padding: const EdgeInsets.symmetric(
-                vertical: 12,
+                vertical: 4,
                 horizontal: 18,
               ),
               child: Row(

@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart'
-    show ColorScheme, ReorderableListView, Scaffold, Theme;
+    show ColorScheme, ReorderableListView, Scaffold, Theme, debugPrint;
 import 'package:flutter/widgets.dart'
     show
         Align,
@@ -13,12 +13,15 @@ import 'package:flutter/widgets.dart'
         EdgeInsets,
         Expanded,
         FadeTransition,
+        FlexFit,
+        Flexible,
         Key,
         LayoutBuilder,
         ListView,
         MainAxisSize,
         Padding,
         SafeArea,
+        SingleChildScrollView,
         State,
         StatefulWidget,
         Widget;
@@ -42,14 +45,14 @@ import 'package:orangelist/src/home/widgets/top_bar.dart' show TopBar;
 import 'package:orangelist/src/theme/colors.dart' show bgDark, themeColor;
 import 'package:provider/provider.dart' show Consumer;
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreenWeb extends StatefulWidget {
+  const HomeScreenWeb({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreenWeb> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreenWeb> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,18 +60,29 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
+            debugPrint(constraints.maxHeight.toString());
+            // Define the ratio between the top and bottom sections
+            double topPartRatio = 0.4; // 40% of the screen height for top
+            double bottomPartRatio = 0.6; // 60% for bottom
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    AboutBanner(),
-                    TopBar(),
-                    CreateTaskBar(),
-                  ],
+                Flexible(
+                  flex: (topPartRatio * 100).toInt(), // 40% of the height
+                  fit: FlexFit.loose,
+                  child: const SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AboutBanner(),
+                        TopBar(),
+                        CreateTaskBar(),
+                      ],
+                    ),
+                  ),
                 ),
                 Expanded(
+                  flex: (bottomPartRatio * 100).toInt(), // 60% of the height
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
