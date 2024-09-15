@@ -244,7 +244,6 @@ class _CreateTaskBarState extends State<CreateTaskBar> {
                           FontAwesomeIcons.plus,
                           color: bgDark,
                           size: 32,
-                          // todo: find apt size for icons
                         ),
                       ),
                     ],

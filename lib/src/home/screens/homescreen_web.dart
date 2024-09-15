@@ -1,6 +1,5 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart'
-    show ColorScheme, ReorderableListView, Scaffold, Theme, debugPrint;
+    show ColorScheme, Scaffold, Theme, debugPrint;
 import 'package:flutter/widgets.dart'
     show
         Align,
@@ -9,15 +8,12 @@ import 'package:flutter/widgets.dart'
         Animation,
         BuildContext,
         Column,
-        Container,
         EdgeInsets,
         Expanded,
         FadeTransition,
         FlexFit,
         Flexible,
-        Key,
         LayoutBuilder,
-        ListView,
         MainAxisSize,
         Padding,
         SafeArea,
@@ -25,21 +21,17 @@ import 'package:flutter/widgets.dart'
         State,
         StatefulWidget,
         Widget;
-import 'package:orangelist/src/constants/strings.dart'
-    show listViewKey, reorderableListKey;
 
-import 'package:orangelist/src/home/data/todo_model.dart' show TodoModel;
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/home/widgets/about_banner.dart' show AboutBanner;
 import 'package:orangelist/src/home/widgets/create_task_bar.dart'
     show CreateTaskBar;
-import 'package:orangelist/src/home/widgets/dismissible_task_tile.dart'
-    show DismissibleTaskTile;
 import 'package:orangelist/src/home/widgets/no_todo.dart' show NoTodos;
-import 'package:orangelist/src/home/widgets/reorder_tile.dart' show ReOrderTile;
-import 'package:orangelist/src/home/widgets/task_tile_widget.dart'
-    show TaskTileWidget;
+import 'package:orangelist/src/home/widgets/smooth_reorderable_listview.dart'
+    show SmoothReorderableListview;
+import 'package:orangelist/src/home/widgets/todo_listview.dart'
+    show TodoListview;
 import 'package:orangelist/src/home/widgets/top_bar.dart' show TopBar;
 
 import 'package:orangelist/src/theme/colors.dart' show bgDark, themeColor;
@@ -114,69 +106,9 @@ class _HomeScreenState extends State<HomeScreenWeb> {
                                   ? const NoTodos()
                                   : isReordering &&
                                           todoprovider.dailyToDolist.length > 1
-                                      ? ReorderableListView(
-                                          key: const Key(reorderableListKey),
-                                          shrinkWrap: true,
-                                          onReorder:
-                                              (int oldIndex, int newIndex) {
-                                            todoprovider.onReorder(
-                                              oldIndex,
-                                              newIndex,
-                                              context,
-                                            );
-                                          },
-                                          buildDefaultDragHandles: false,
-                                          children: [
-                                            for (int index = 0;
-                                                index <
-                                                    todoprovider
-                                                        .dailyToDolist.length;
-                                                index++)
-                                              ReOrderTile(
-                                                key: Key('$index'),
-                                                index: index,
-                                                title: todoprovider
-                                                    .dailyToDolist[index].title,
-                                              ),
-                                          ],
-                                        )
-                                      : ListView.builder(
-                                          key: const Key(listViewKey),
-                                          shrinkWrap: true,
-                                          itemCount: todoprovider.focusMode
-                                              ? 1
-                                              : todoprovider
-                                                  .dailyToDolist.length,
-                                          itemBuilder: (context, index) {
-                                            if (todoprovider.focusMode) {
-                                              int incompleteIndex =
-                                                  findTheCorrectIndex(
-                                                      todoprovider
-                                                          .dailyToDolist);
-                                              return incompleteIndex == -1
-                                                  ? Container()
-                                                  : TaskTileWidget(
-                                                      taskTitle: todoprovider
-                                                          .dailyToDolist[
-                                                              incompleteIndex]
-                                                          .title,
-                                                      index: incompleteIndex,
-                                                    );
-                                            } else {
-                                              String taskTitle = todoprovider
-                                                  .dailyToDolist[index].title;
-                                              return (kIsWeb ||
-                                                      todoprovider.toTestForWeb)
-                                                  ? TaskTileWidget(
-                                                      taskTitle: taskTitle,
-                                                      index: index,
-                                                    )
-                                                  : DismissibleTaskTile(
-                                                      title: taskTitle,
-                                                      index: index,
-                                                    );
-                                            }
-                                          },
+                                      ? const SmoothReorderableListview()
+                                      : TodoListview(
+                                          todoprovider: todoprovider,
                                         ),
                             );
                           },
@@ -191,11 +123,5 @@ class _HomeScreenState extends State<HomeScreenWeb> {
         ),
       ),
     );
-  }
-
-  /// Finds the first index which is still not finished
-  int findTheCorrectIndex(List<TodoModel> todoList) {
-    int index = todoList.indexWhere((element) => !element.isCompleted);
-    return index;
   }
 }
