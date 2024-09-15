@@ -24,7 +24,8 @@ import 'package:flutter/widgets.dart'
         Widget;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'
     show FaIcon, FontAwesomeIcons;
-import 'package:orangelist/src/constants/strings.dart';
+import 'package:orangelist/src/constants/strings.dart'
+    show deleteKey, editKey, statusUpdateTodoKey;
 import 'package:orangelist/src/home/provider/todo_provider.dart'
     show TodoProvider;
 import 'package:orangelist/src/home/widgets/delete_alert_dialog.dart'
@@ -132,7 +133,6 @@ class TaskTileWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              // Todo: Add a dependency to by pass [kIsWeb] in testMode
               if (!forReorder &&
                   !focusMode &&
                   (kIsWeb || todoProvider.isTestMode))

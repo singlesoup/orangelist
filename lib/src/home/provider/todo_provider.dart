@@ -143,18 +143,16 @@ class TodoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> onReorder(
-      int oldIndex, int newIndex, BuildContext context) async {
+  ///[Note]: Since we are hanlding the state change with SetState
+  ///
+  /// so we don't need the notify the changesfor front end
+  void onReorder(int oldIndex, int newIndex, BuildContext context) async {
     if (newIndex > oldIndex) {
       newIndex -= 1;
     }
-
-    TodoModel item = _dailyToDolist[oldIndex];
-    _dailyToDolist.removeAt(oldIndex);
+    TodoModel item = _dailyToDolist.removeAt(oldIndex);
     _dailyToDolist.insert(newIndex, item);
-
     await putTodo(TodoList(todos: _dailyToDolist), todoBox);
-    notifyListeners();
   }
 
   /// For Focus Mode switch
