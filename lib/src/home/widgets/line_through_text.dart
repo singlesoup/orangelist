@@ -103,11 +103,12 @@ class _LineThroughTextState extends State<LineThroughText>
     }
     final globalWidth = GlobalMediaQuerySize.screenWidth ?? 0;
     _textPainter.layout(maxWidth: globalWidth);
-    setState(() {
-      _textHeight = globalWidth > 1300
-          ? _textPainter.height * 4.8
-          : _textPainter.height * 2.8;
-    });
+    _textHeight = globalWidth > 1300
+        ? _textPainter.height * 4.8
+        : _textPainter.height * 2.8;
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
