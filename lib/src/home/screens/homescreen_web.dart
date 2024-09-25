@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart'
-    show ColorScheme, Scaffold, Theme, debugPrint;
+import 'package:flutter/material.dart' show ColorScheme, Scaffold, Theme;
 import 'package:flutter/widgets.dart'
     show
         Align,
@@ -52,7 +51,7 @@ class _HomeScreenState extends State<HomeScreenWeb> {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            debugPrint(constraints.maxHeight.toString());
+            // debugPrint(constraints.maxHeight.toString());
             // Define the ratio between the top and bottom sections
             double topPartRatio = 0.4; // 40% of the screen height for top
             double bottomPartRatio = 0.6; // 60% for bottom
